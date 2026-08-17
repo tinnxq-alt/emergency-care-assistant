@@ -1,8 +1,8 @@
 {
   "name": "急救诊疗助手",
   "short_name": "急救助手",
-  "description": "基层急诊、抢救与值班工作台 v0.10 全项可编辑临床预览",
-  "start_url": "./",
+  "description": "基层急诊、抢救与值班工作台 v0.11 多页面全项可编辑临床预览",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f4f6fa",
   "theme_color": "#c9363c",
