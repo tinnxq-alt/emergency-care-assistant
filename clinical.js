@@ -4,15 +4,15 @@
   const $ = (s) => document.querySelector(s);
   const esc = (s='') => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // Deliberately conservative mapping: broad symptoms such as “休克/呼吸困难/意识障碍”
-  // are NOT auto-mapped to a single diagnosis, to reduce anchoring risk.
+  // Conservative mapping: broad symptoms are not auto-mapped to one diagnosis.
+  // The clinical card opens only for an explicit diagnosis or a highly specific red-flag entry.
   const topicMap = {
     '心搏骤停':'心搏骤停','心搏骤停/无反应':'心搏骤停','立即抢救入口':'心搏骤停',
     '胸痛':'胸痛','急性胸痛高危':'胸痛','急性冠脉综合征':'胸痛',
     '严重过敏反应':'严重过敏反应','严重过敏表现':'严重过敏反应',
     '脓毒症':'脓毒症','感染性休克':'脓毒症',
-    '低血糖':'低血糖','低血糖表现':'低血糖',
-    '抽搐':'癫痫持续状态','癫痫持续状态':'癫痫持续状态',
+    '低血糖':'低血糖',
+    '癫痫持续状态':'癫痫持续状态',
     '哮喘急性发作':'哮喘急性发作','COPD急性加重':'COPD急性加重'
   };
 
@@ -94,7 +94,6 @@
     $('#openGuidelinesBtn')?.addEventListener('click',openSourceLibrary);
   }
 
-  // Capture before the legacy placeholder click handler. This only intercepts safely mapped diagnoses/topics.
   document.addEventListener('click',e=>{
     const drug=e.target.closest('[data-drug]');
     if(drug && C.drugs[drug.dataset.drug]){
