@@ -1,5 +1,6 @@
 (() => {
   const D=window.EMERGENCY_DATA;
+  const CART=window.CRASH_CART;
   if(!D) return;
   const page=document.body.dataset.page;
   const $=s=>document.querySelector(s);
@@ -16,7 +17,9 @@
   }
   function genericDrug(name){
     const item=(D.drugs||[]).find(x=>x.name===name);
-    openModal(name,item?.group||'抢救用药',`<div class="callout">此药物尚无完整结构化临床卡。剂量、稀释、泵速等高风险字段在权威核验前保持锁定；你可以添加本机备注，但应重新临床复核。</div>${['适应证','成人剂量','给药途径','稀释/泵速','禁忌与慎用','不良反应','特殊人群','来源与更新时间'].map(x=>`<section class="modal-card"><h3>${x}</h3><p>待权威来源核验或本机补充。</p></section>`).join('')}`);
+    const stock=(CART?.drugs||[]).find(x=>x.name===name||x.clinicalKey===name);
+    const stockHtml=stock?`<section class="modal-card"><h3>本院抢救车库存</h3><p><strong>${esc(stock.name)}</strong> · ${esc(stock.spec)} · ${esc(stock.qty)} · ${esc(stock.layer)}</p><p>来源：${esc(CART.meta.source)}，录入日期 ${esc(CART.meta.recordedAt)}。库存信息不代表指南推荐。</p></section>`:'';
+    openModal(name,item?.group||'抢救用药',`${stockHtml}<div class="callout">此药物尚无完整结构化临床卡。剂量、稀释、泵速等高风险字段在权威核验前保持锁定；你可以添加本机备注，但应重新临床复核。</div>${['适应证','成人剂量','给药途径','稀释/泵速','禁忌与慎用','不良反应','特殊人群','来源与更新时间'].map(x=>`<section class="modal-card"><h3>${x}</h3><p>待权威来源核验或本机补充。</p></section>`).join('')}`);
   }
 
   function renderEmergency(){
@@ -31,12 +34,25 @@
 
   function renderDrugs(){
     const host=$('#drugPageGroups'), search=$('#drugSearch');
-    const render=()=>{
-      const q=(search?.value||'').trim().toLowerCase();
-      const arr=(D.drugs||[]).filter(x=>!q||`${x.name} ${x.group}`.toLowerCase().includes(q));
+    let mode='all';
+    const stockFor=name=>(CART?.drugs||[]).find(s=>s.clinicalKey===name||s.name===name);
+    const renderAll=q=>{
+      const arr=(D.drugs||[]).filter(x=>{
+        const stock=stockFor(x.name);const text=`${x.name} ${x.group} ${stock?.name||''} ${stock?.spec||''}`.toLowerCase();
+        return !q||text.includes(q);
+      });
       const groups=new Map();arr.forEach(x=>{if(!groups.has(x.group))groups.set(x.group,[]);groups.get(x.group).push(x);});
-      host.innerHTML=[...groups.entries()].map(([group,items])=>`<section class="drug-group"><h3>${esc(group)}</h3><div class="page-grid">${items.map(x=>`<button class="page-item" data-drug="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${x.verified===true?'已核验':x.verified==='partial'?'部分核验':'待核验'}</small></div><span>→</span></button>`).join('')}</div></section>`).join('')||'<div class="page-empty">没有匹配药物</div>';
+      return [...groups.entries()].map(([group,items])=>`<section class="drug-group"><h3>${esc(group)}</h3><div class="page-grid">${items.map(x=>{const stock=stockFor(x.name);return `<button class="page-item" data-drug="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${x.verified===true?'已核验':x.verified==='partial'?'部分核验':'待核验'}${stock?` · 本院有药 ${esc(stock.spec)} ${esc(stock.qty)}`:''}</small></div><span>→</span></button>`;}).join('')}</div></section>`).join('');
     };
+    const renderCart=q=>{
+      const arr=(CART?.drugs||[]).filter(x=>!q||`${x.name} ${x.spec} ${x.qty} ${x.layer}`.toLowerCase().includes(q));
+      const groups=new Map();arr.forEach(x=>{if(!groups.has(x.layer))groups.set(x.layer,[]);groups.get(x.layer).push(x);});
+      const note=`<section class="page-section"><div class="clinical-note"><strong>${esc(CART?.meta?.name||'本院抢救车')}</strong>：${esc(CART?.meta?.note||'')}</div></section>`;
+      const body=[...groups.entries()].map(([layer,items])=>`<section class="drug-group"><h3>${esc(layer)}</h3><div class="page-grid">${items.map(x=>`<button class="page-item" data-drug="${esc(x.clinicalKey||x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.spec)} · ${esc(x.qty)} · 本院有药</small></div><span>→</span></button>`).join('')}</div></section>`).join('');
+      return note+body;
+    };
+    const render=()=>{const q=(search?.value||'').trim().toLowerCase();host.innerHTML=(mode==='cart'?renderCart(q):renderAll(q))||'<div class="page-empty">没有匹配药物</div>';};
+    document.querySelectorAll('[data-drug-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.drugMode;document.querySelectorAll('[data-drug-mode]').forEach(x=>x.classList.toggle('active',x===btn));render();}));
     search?.addEventListener('input',render);render();
   }
 
@@ -57,7 +73,6 @@
   if(page==='drugs')renderDrugs();
   if(page==='todo')renderTodo();
 
-  // Fallback handlers run only when no clinical capture-layer handler consumed the click.
   document.body.addEventListener('click',e=>{
     if(page==='emergency'){
       const c=e.target.closest('[data-critical]');if(c){genericEmergency(c.dataset.critical,true);return;}
