@@ -10,11 +10,12 @@
   if(!overlay||!titleEl||!content) return;
 
   const criticalNames=()=>new Set((D.critical||[]).map(x=>x.name));
+  const drugNames=()=>new Set((D.drugs||[]).map(x=>x.name));
   const isGenericCard=(title)=>{
     if(C?.topics?.[title]||C?.drugs?.[title]||C?.algorithms?.[title]) return false;
-    return (D.complaint||[]).includes(title)||(D.diagnosis||[]).includes(title)||(D.flows||[]).includes(title)||criticalNames().has(title);
+    return (D.complaint||[]).includes(title)||(D.diagnosis||[]).includes(title)||(D.flows||[]).includes(title)||criticalNames().has(title)||drugNames().has(title);
   };
-  const labelFor=(title)=> (D.flows||[]).includes(title)?'普通流程内容':'普通急症/主诉内容';
+  const labelFor=(title)=> (D.flows||[]).includes(title)?'普通流程内容':drugNames().has(title)?'待核验药物本机内容':'普通急症/主诉内容';
 
   function modal(title,subtitle,html){
     titleEl.textContent=title;document.querySelector('#modalSubtitle').textContent=subtitle||'';content.innerHTML=html;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');
@@ -34,7 +35,7 @@
   }
   function openGenericEditor(key){
     const current=store.cards[key]?.text||'';
-    modal('编辑 · '+key,labelFor(key)+' · 仅保存在当前浏览器',`<div class="edit-warning">⚠ 这里用于补充你的本地流程/主诉内容。若涉及药物剂量或高风险操作，保存后仍需自行复核。</div><form id="genericEditForm" class="clinical-edit-form"><label class="edit-field"><span>自定义内容（每行一项）</span><textarea id="genericEditText" rows="12">${esc(current)}</textarea></label><div class="edit-form-actions"><button class="save-edit-btn" type="submit">保存修改</button><button class="cancel-edit-btn" type="button">取消</button></div></form>`);
+    modal('编辑 · '+key,labelFor(key)+' · 仅保存在当前浏览器',`<div class="edit-warning">⚠ 这里用于补充你的本机内容。若涉及药物剂量、配液、泵速或高风险操作，保存后仍需依据权威指南、具体药品说明书及本机构流程复核。</div><form id="genericEditForm" class="clinical-edit-form"><label class="edit-field"><span>自定义内容（每行一项）</span><textarea id="genericEditText" rows="12">${esc(current)}</textarea></label><div class="edit-form-actions"><button class="save-edit-btn" type="submit">保存修改</button><button class="cancel-edit-btn" type="button">取消</button></div></form>`);
     const form=document.querySelector('#genericEditForm');
     form?.addEventListener('submit',e=>{e.preventDefault();const text=document.querySelector('#genericEditText')?.value.trim()||'';if(text)store.cards[key]={text};else delete store.cards[key];save();location.reload();});
     form?.querySelector('.cancel-edit-btn')?.addEventListener('click',()=>location.reload());
