@@ -4,8 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#c9363c" />
-  <title>急救诊疗助手 v0.2</title>
+  <meta name="description" content="急救诊疗助手：基层急诊、抢救与值班工作台开发预览版" />
+  <title>急救诊疗助手 v0.3 · 开发预览</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./enhancements.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -14,9 +18,9 @@
         <div class="brand-mark">✚</div>
         <div><h1>急救诊疗助手</h1><p>基层急诊 · 抢救 · 值班工作台</p></div>
       </div>
-      <span class="version">v0.2 原型</span>
+      <span class="version">v0.3 开发预览</span>
     </header>
-    <div class="safety-banner">⚠ 当前为产品原型。诊疗流程、药物剂量、评分与计算结果必须在正式上线前由权威指南和本机构规范逐项核验，不可直接替代临床判断。</div>
+    <div class="safety-banner">⚠ 当前为开发预览版。诊疗流程、药物剂量、评分与计算结果必须在正式上线前由权威指南和本机构规范逐项核验，不可直接替代临床判断。</div>
     <section class="hero">
       <div class="search-box"><span>⌕</span><input id="globalSearch" placeholder="搜索主诉、急症、药物、流程、工具…" autocomplete="off" /><button id="searchBtn">搜索</button></div>
       <button class="red-action" data-action="open-critical">立即抢救</button>
@@ -34,6 +38,8 @@
   </div>
   <nav class="mobile-nav"><button data-scroll="top"><b>⌂</b><span>首页</span></button><button data-open="急症处置"><b>🚑</b><span>急症</span></button><button data-open="抢救用药"><b>💉</b><span>用药</span></button><button data-open="待办"><b>✓</b><span>待办</span></button></nav>
   <div id="overlay" class="overlay" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalSubtitle"></p></div><button id="closeModalBtn" class="icon-btn">关闭</button></div><div id="modalContent"></div></div></div>
-  <script src="./data.js"></script><script src="./app.js"></script>
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+  <script src="./enhancements.js"></script>
 </body>
 </html>
