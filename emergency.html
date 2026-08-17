@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#c9363c" />
+  <title>急症 · 急救诊疗助手 v0.11</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./enhancements.css" />
+  <link rel="stylesheet" href="./clinical.css" />
+  <link rel="stylesheet" href="./clinical-decorators.css" />
+  <link rel="stylesheet" href="./editable.css" />
+  <link rel="stylesheet" href="./navigation.css" />
+</head>
+<body data-page="emergency">
+  <div class="subpage-shell">
+    <header class="topbar"><div class="brand"><div class="brand-mark">✚</div><div><h1>急救诊疗助手</h1><p>急症独立页面</p></div></div><span class="version">v0.11</span></header>
+    <div class="safety-banner">⚠ 急症页用于快速进入红旗、主诉和明确诊断。权威默认内容与本机修改分层显示；复杂高风险治疗仍需结合完整指南、本机构制度和患者情况。</div>
+    <div class="subpage-head"><div><h1>急症</h1><p>先识别红旗，再从主诉或明确诊断进入。</p></div></div>
+    <div class="page-search"><input id="emergencySearch" placeholder="搜索急症、主诉、诊断…" autocomplete="off" /></div>
+    <main>
+      <section class="page-section"><h2>红旗入口</h2><p class="hint">出现生命威胁征象优先抢救和升级，不等待完整诊断。</p><div id="criticalPageGrid" class="page-grid"></div></section>
+      <section class="page-section"><div class="page-tabs"><button class="page-chip active" data-emergency-mode="diagnosis">按诊断</button><button class="page-chip" data-emergency-mode="complaint">按主诉</button></div><div id="emergencyPageGrid" class="page-grid"></div></section>
+    </main>
+  </div>
+  <nav class="mobile-nav"><a href="./index.html"><b>⌂</b><span>首页</span></a><a class="active" href="./emergency.html"><b>🚑</b><span>急症</span></a><a href="./drugs.html"><b>💉</b><span>用药</span></a><a href="./todo.html"><b>✓</b><span>待办</span></a></nav>
+  <div id="overlay" class="overlay" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalSubtitle"></p></div><button id="closeModalBtn" class="icon-btn">关闭</button></div><div id="modalContent"></div></div></div>
+  <script src="./data.js"></script>
+  <script src="./clinical-data.js"></script><script src="./clinical-batch2.js"></script><script src="./clinical-batch3.js"></script><script src="./clinical-batch4.js"></script><script src="./clinical-batch5.js"></script><script src="./clinical-batch6.js"></script><script src="./clinical-batch7.js"></script><script src="./clinical-batch8.js"></script>
+  <script src="./pages.js"></script>
+  <script src="./clinical.js"></script><script src="./clinical-batch2-ui.js"></script><script src="./clinical-batch3-ui.js"></script><script src="./clinical-batch4-ui.js"></script><script src="./clinical-batch5-ui.js"></script><script src="./clinical-batch6-ui.js"></script><script src="./clinical-batch7-ui.js"></script><script src="./clinical-batch8-ui.js"></script><script src="./clinical-decorators.js"></script><script src="./editable.js"></script><script src="./generic-editable.js"></script>
+</body>
+</html>
