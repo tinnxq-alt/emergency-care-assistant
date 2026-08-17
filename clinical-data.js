@@ -1,0 +1,162 @@
+window.CLINICAL_DATA = {
+  meta: {
+    version: 'v0.4-clinical-alpha',
+    verifiedAt: '2026-08-17',
+    scope: '成人为主；儿童、孕产妇及特殊人群需进入专门流程。',
+    disclaimer: '临床摘要用于医生快速查阅，不替代完整指南、本机构制度、药品说明书及临床判断。高风险药物应执行本机构复核制度。'
+  },
+  sources: {
+    aha2025: {name:'AHA 2025 CPR & ECC（成人高级生命支持）', year:'2025', org:'American Heart Association', url:'https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-advanced-life-support'},
+    ahaAlgorithms2025: {name:'AHA 2025 CPR & ECC Algorithms', year:'2025', org:'American Heart Association', url:'https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/algorithms/'},
+    ahaPost2025: {name:'AHA 2025 Post–Cardiac Arrest Care', year:'2025', org:'American Heart Association', url:'https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/post-cardiac-arrest-care'},
+    acs2025: {name:'2025 ACC/AHA/ACEP/NAEMSP/SCAI Acute Coronary Syndromes Guideline', year:'2025', org:'ACC/AHA/ACEP/NAEMSP/SCAI', url:'https://professional.heart.org/en/science-news/2025-guideline-for-the-management-of-patients-with-acute-coronary-syndromes'},
+    chest2021: {name:'2021 AHA/ACC Chest Pain Guideline', year:'2021', org:'AHA/ACC', url:'https://professional.heart.org/en/science-news/2021-guideline-for-the-evaluation-and-diagnosis-of-chest-pain'},
+    firstAid2024: {name:'2024 AHA/American Red Cross First Aid Guideline', year:'2024', org:'AHA/American Red Cross', url:'https://professional.heart.org/en/science-news/2024-aha-and-american-red-cross-guidelines-for-first-aid'},
+    rcuk2025: {name:'Resuscitation Council UK / ERC 2025 Special Circumstances', year:'2025', org:'RCUK/ERC', url:'https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/special-circumstances-guidelines'},
+    rcukAna: {name:'RCUK Emergency Treatment of Anaphylaxis', year:'2021（2025 resuscitation guidance continues to reference it）', org:'Resuscitation Council UK', url:'https://www.resus.org.uk/library/additional-guidance/guidance-anaphylaxis/emergency-treatment-anaphylactic-reactions'},
+    ssc2026: {name:'Surviving Sepsis Campaign: Adult Sepsis/Septic Shock Guideline', year:'2026', org:'SCCM/ESICM', url:'https://www.sccm.org/survivingsepsiscampaign/guidelines-and-resources/surviving-sepsis-campaign-adult-guidelines'},
+    ada2026: {name:'ADA Standards of Care in Diabetes—2026', year:'2026', org:'American Diabetes Association', url:'https://diabetesjournals.org/care/article/49/Supplement_1/S132/163927/6-Glycemic-Goals-Hypoglycemia-and-Hyperglycemic'},
+    nice2025: {name:'NICE NG217 Epilepsies — status epilepticus section', year:'2022，updated 2025-01-30', org:'NICE', url:'https://www.nice.org.uk/guidance/ng217/chapter/7-Treating-status-epilepticus-repeated-or-cluster-seizures-and-prolonged-seizures'},
+    gina2026: {name:'GINA 2026 Summary Guide', year:'2026', org:'Global Initiative for Asthma', url:'https://ginasthma.org/2026-gina-summary-guide/', note:'仅做原创临床摘要；不复制 GINA 原图或大段原文。'},
+    gold2026: {name:'GOLD 2026 Report and Pocket Guide', year:'2026', org:'Global Initiative for Chronic Obstructive Lung Disease', url:'https://goldcopd.org/2026-gold-report-and-pocket-guide/', note:'已绑定最新来源；详细急性加重参数继续逐条核验。'}
+  },
+  topics: {
+    '心搏骤停': {
+      aliases:['心搏骤停/无反应','立即抢救入口'], status:'verified', sourceIds:['aha2025','ahaAlgorithms2025','ahaPost2025'],
+      summary:'无反应且无正常呼吸/仅濒死喘息时，立即启动复苏系统、开始高质量 CPR，并尽快连接除颤器。',
+      redFlags:['无反应','无正常呼吸或仅濒死喘息','无明确脉搏/循环征象'],
+      steps:[
+        '高质量胸外按压：成人频率 100–120 次/分，深度至少约 5 cm，充分回弹并尽量减少中断。',
+        '无高级气道时按压:通气 30:2；高级气道建立后持续按压并约每 6 秒通气 1 次。',
+        'VF/pVT：优先除颤；每次电击后立即 CPR 2 分钟。第二次电击后进入肾上腺素节奏，第三次电击后考虑胺碘酮或利多卡因。',
+        'PEA/心静止：肾上腺素尽早给药，并持续每 3–5 分钟重复，同时寻找可逆病因。',
+        '持续处理低氧、低血容量、酸中毒、电解质异常、低体温、张力性气胸、心脏压塞、毒物、肺/冠脉血栓等可逆原因。'
+      ],
+      doses:[
+        '肾上腺素 IV/IO：1 mg，每 3–5 分钟。',
+        '胺碘酮（难治性 VF/pVT）：首剂 300 mg IV/IO 推注；第二剂 150 mg。',
+        '利多卡因替代方案：首剂 1–1.5 mg/kg IV/IO；第二剂 0.5–0.75 mg/kg。'
+      ],
+      reassess:'ROSC 后尽快进入复苏后管理；可可靠监测 SpO₂ 后，AHA 2025 建议将氧合目标控制在约 90%–98%，避免低氧与高氧。'
+    },
+    '胸痛': {
+      aliases:['急性胸痛高危','急性冠脉综合征'], status:'verified', sourceIds:['acs2025','chest2021','firstAid2024'],
+      summary:'急性胸痛首先排除 ACS 及主动脉综合征、肺栓塞、张力性气胸等致命病因；尽快完成心电图与心肌损伤标志物评估。',
+      redFlags:['持续/进行性胸痛伴出汗、恶心或呼吸困难','低血压、休克或急性心衰','晕厥/严重心律失常','新发缺血性 ECG 改变'],
+      steps:[
+        '到诊后尽快获取 12 导联 ECG；基层流程目标建议采用 10 分钟内完成。',
+        '使用高敏肌钙蛋白进行序贯检测，并结合结构化风险评估，不以单次正常结果排除早期 ACS。',
+        '疑似 STEMI/高危 ACS 时尽快启动转运与再灌注系统，不因低价值检查延误转诊。',
+        '确诊 ACS 后的抗栓、再灌注和侵入策略依 2025 ACC/AHA ACS 指南及上级中心路径执行。'
+      ],
+      doses:['清醒成人非创伤性急性胸痛、无阿司匹林过敏且无明确禁忌时：可咀嚼阿司匹林 162–325 mg（AHA/Red Cross 2024 first-aid guidance）。'],
+      caution:'阿司匹林不是所有胸痛都适用；怀疑主动脉夹层、活动性严重出血或明确禁忌时不可机械套用。'
+    },
+    '严重过敏反应': {
+      aliases:['严重过敏表现','过敏表现'], status:'verified', sourceIds:['rcuk2025','rcukAna'],
+      summary:'出现快速进展的气道、呼吸或循环问题时，即使皮肤表现不典型，也应按过敏性反应/过敏性休克优先处理。',
+      redFlags:['喉鸣、声音改变或舌/咽部肿胀','喘鸣、明显呼吸困难或低氧','低血压、晕厥、休克','快速进展且近期存在可疑过敏原暴露'],
+      steps:[
+        '停止/移除可疑诱因（若可立即完成），呼叫支援，ABCDE 评估并持续监护。',
+        '首选大腿外侧肌内肾上腺素；不要等待皮疹出现，也不要先用抗组胺药替代肾上腺素。',
+        '患者通常取平卧位；明显呼吸困难时可调整体位，但避免突然站立/坐起导致循环恶化。',
+        '循环不稳时尽早建立静脉通路并给予晶体液，动态评估反应。',
+        '对持续 ABC 问题的难治性病例，尽快升级高级救治；静脉肾上腺素应由具备经验和监护条件的团队按专门方案实施。'
+      ],
+      doses:['成人 IM 肾上腺素：0.5 mg（500 微克，使用 1 mg/mL 浓度），若 5 分钟后无明显改善可重复。'],
+      caution:'抗组胺药不处理 ABC 危险；糖皮质激素不再作为常规一线救命治疗。'
+    },
+    '脓毒症': {
+      aliases:['休克/循环不稳','休克'], status:'verified', sourceIds:['ssc2026'],
+      summary:'脓毒症/感染性休克是医疗急症。2026 SSC 强调：临床识别、及时培养/乳酸、抗菌治疗、个体化液体复苏和早期血管活性药并行推进。',
+      redFlags:['感染背景下低血压或灌注差','意识改变、皮肤花斑/灰白、少尿','乳酸升高或进行性器官功能障碍','需血管活性药维持灌注'],
+      steps:[
+        '尽快采血培养，理想情况下在抗菌药前完成，但不得为等待培养而明显延误治疗；建议测乳酸。',
+        '脓毒症诱导的低灌注或感染性休克：初始 3 小时内可考虑至少 30 mL/kg 静脉晶体液，同时依据心衰、肾功能、年龄和动态反应个体化。',
+        '持续低血压时使用血管活性药；2026 SSC 推荐去甲肾上腺素作为感染性休克一线药物。',
+        '初始 MAP 目标通常约 65 mmHg；≥65 岁患者指南提出可考虑初始 60–65 mmHg 范围。',
+        '疑似/明确感染性休克或高度可能脓毒症：抗菌药应尽快，理想目标为识别后 1 小时内；“可能脓毒症但无休克”可快速评估，若感染疑虑持续则目标 3 小时内。',
+        '寻找需要紧急源控制的感染灶；需要源控制时，指南倾向尽早实施，目标通常在诊断后约 6 小时内。'
+      ],
+      fluids:'初始复苏优先晶体液；2026 SSC 倾向平衡晶体液。液体后应频繁复评，避免机械补满造成容量过负荷。',
+      caution:'“30 mL/kg”是条件性建议，不是对所有患者的固定处方。'
+    },
+    '低血糖': {
+      aliases:['低血糖表现'], status:'verified', sourceIds:['ada2026'],
+      summary:'血糖 <3.9 mmol/L（70 mg/dL）即具有临床意义；严重低血糖可表现为意识改变、抽搐或昏迷。',
+      redFlags:['意识障碍/不能安全吞咽','抽搐或昏迷','反复低血糖','合并长效降糖药、肝肾衰竭或摄入不足'],
+      steps:[
+        '能安全吞咽者优先口服快速吸收葡萄糖/含葡萄糖碳水。',
+        '一般成人常用 15 g 快速碳水，15 分钟后复测；仍低于 3.9 mmol/L 时重复处理。',
+        '不能吞咽或意识受损者进入急救路径：静脉葡萄糖或胰高血糖素，并持续监测。',
+        '纠正后必须查找诱因并预防复发；住院患者发生 <3.9 mmol/L 后应重新评估降糖方案。'
+      ],
+      target:'治疗后持续复测直至血糖稳定高于 3.9 mmol/L，并结合病因决定观察时间。'
+    },
+    '癫痫持续状态': {
+      aliases:['抽搐/意识障碍','抽搐'], status:'verified', sourceIds:['nice2025'],
+      summary:'全身性惊厥持续 ≥5 分钟按惊厥性癫痫持续状态处理，应同时进行复苏、查血糖并处理可逆病因。',
+      redFlags:['惊厥持续 ≥5 分钟','反复发作期间意识未恢复','低氧/呼吸抑制','低血糖、妊娠子痫、酒精戒断或毒物等可逆诱因'],
+      steps:[
+        '立即 ABC 支持、监护、床旁血糖；有现成个体化急救方案时按方案执行。',
+        '一线为苯二氮䓬类：院外可用口腔黏膜咪达唑仑或直肠地西泮；具备静脉通路及复苏条件时可用静脉劳拉西泮。',
+        '首剂后仍持续发作，约 5–10 分钟可按方案给予第二剂苯二氮䓬类。',
+        '2 剂苯二氮䓬类后仍发作：静脉左乙拉西坦、苯妥英或丙戊酸钠可作为二线；NICE 提醒左乙拉西坦准备/给药更快且不良反应可能较少。',
+        '二线失败后应尽快专家指导并升级重症/麻醉路径。'
+      ],
+      caution:'丙戊酸钠存在重要生殖与妊娠相关安全限制；具体剂量应按当地急救方案/药品说明书并由专业人员复核。'
+    },
+    '哮喘急性发作': {
+      aliases:['严重呼吸困难','呼吸困难'], status:'verified', sourceIds:['gina2026'],
+      summary:'一边判断严重程度，一边立即给予支气管扩张治疗和必要的氧疗；重症或危及生命表现应立即转急性医疗机构。',
+      redFlags:['不能完整说话/饮水或不能平卧','静息 SpO₂ <92%','呼吸频率 >30/分','安静胸/明显气流下降','PEF <50% 个人最佳或预计值','嗜睡、意识混乱或发绀'],
+      steps:[
+        '轻/中度：优先经 pMDI+储雾罐给予 SABA，并根据反应复评；中度或 SABA 反应不足时加异丙托溴铵。',
+        '重症/危及生命：立即转诊并同步治疗；持续监护。若合并过敏反应，优先肾上腺素。',
+        '需要氧疗时滴定至 SpO₂ 92%–95%（海拔等情况需调整）。',
+        '除轻度发作外，尽早给予全身糖皮质激素。',
+        '不常规做胸片/血气，不常规开抗菌药；避免镇静药。',
+        '治疗后约 1 小时或更早复评症状、SpO₂、呼吸频率、气流和 PEF；恶化或反应不佳立即升级。'
+      ],
+      doses:[
+        '成人重症：沙丁胺醇 6–10 喷（100 μg/喷）经 pMDI+储雾罐，或 5 mg 雾化；必要时每 20–30 分钟重复。',
+        '异丙托溴铵：可在每次沙丁胺醇时加 4 喷，最多 3 次（具体制剂规格需核对）。',
+        '泼尼松龙：成人 40–50 mg，每日晨服，疗程 5–7 天。'
+      ],
+      copyrightNote:'本卡为根据 GINA 2026 的原创中文摘要，不复制其原图和原文；正式商业化前需再次核对 GINA 授权条款。'
+    },
+    'COPD急性加重': {
+      aliases:[], status:'source-bound', sourceIds:['gold2026'],
+      summary:'已绑定 GOLD 2026 最新正式来源。当前仅开放评估框架，具体氧疗目标、支气管扩张剂、糖皮质激素、抗菌药和 NIV 参数将在逐条核完原文后再解锁。',
+      redFlags:['进行性呼吸衰竭','意识改变','血流动力学不稳定','明显低氧/高碳酸血症风险'],
+      steps:['评估生命体征、SpO₂、呼吸功和意识。','排查肺炎、气胸、心衰、肺栓塞等替代/并存诊断。','需要高级呼吸支持或循环不稳时立即升级转诊。'],
+      caution:'此卡故意不填未完成逐条核验的治疗数字，防止旧版参数误用。'
+    }
+  },
+  algorithms: {
+    '成人有脉心动过缓': {
+      status:'verified', sourceIds:['aha2025','ahaAlgorithms2025'],
+      points:['通常心率 <50/分且伴低血压、意识急变、休克、缺血性胸痛或急性心衰时进入治疗路径。','先支持 ABC、监护并处理可逆病因。','阿托品无效时考虑经皮起搏和/或多巴胺、肾上腺素输注，并准备经静脉临时起搏。'],
+      doses:['阿托品 1 mg IV 推注，每 3–5 分钟重复，最大总量 3 mg。','多巴胺 5–20 μg/kg/min 静脉输注，按反应滴定。','肾上腺素 2–10 μg/min 静脉输注，按反应滴定。']
+    },
+    '成人有脉心动过速': {
+      status:'verified', sourceIds:['aha2025','ahaAlgorithms2025'],
+      points:['持续性心动过速若造成低血压、意识急变、休克、缺血性胸痛或急性心衰，优先同步电复律。','稳定窄 QRS、规则节律可考虑迷走刺激和腺苷。','稳定规则单形宽 QRS 心动过速可考虑腺苷；也可用抗心律失常输注并寻求专家支持。'],
+      doses:['腺苷：首剂 6 mg 快速 IV 推注并盐水冲管；需要时第二剂 12 mg。','稳定宽 QRS 心动过速：胺碘酮 150 mg 静脉输注 10 分钟；VT 复发可重复，随后 1 mg/min 维持前 6 小时。']
+    }
+  },
+  drugs: {
+    '肾上腺素': {status:'verified', sourceIds:['aha2025','ahaAlgorithms2025','rcuk2025'], indications:['心搏骤停','严重过敏反应'], doses:['心搏骤停：1 mg IV/IO，每 3–5 分钟。','成人严重过敏：0.5 mg IM（1 mg/mL），5 分钟无改善可重复。'], cautions:['过敏反应首选 IM；不要把心搏骤停的 1 mg IV 剂量误用于有循环的过敏患者。']},
+    '胺碘酮': {status:'verified', sourceIds:['ahaAlgorithms2025'], indications:['难治性 VF/pVT','部分稳定宽 QRS 室速'], doses:['心搏骤停 VF/pVT：300 mg IV/IO 首剂，第二剂 150 mg。','稳定宽 QRS VT：150 mg 静滴 10 分钟；复发可重复，之后可 1 mg/min 维持前 6 小时。'], cautions:['不同情境剂量完全不同，使用前必须确认“有脉/无脉”。']},
+    '阿托品': {status:'verified', sourceIds:['ahaAlgorithms2025'], indications:['有脉症状性心动过缓'], doses:['1 mg IV 推注，每 3–5 分钟重复；最大总量 3 mg。'], cautions:['无脉心搏骤停不属于阿托品常规适应证。']},
+    '多巴胺': {status:'verified', sourceIds:['ahaAlgorithms2025'], indications:['阿托品无效的症状性心动过缓桥接'], doses:['5–20 μg/kg/min 静脉输注，按临床反应滴定。'], cautions:['持续心电/血压监护；注意心律失常和缺血。']},
+    '去甲肾上腺素': {status:'verified', sourceIds:['ssc2026'], indications:['感染性休克一线血管活性药'], doses:['2026 SSC 推荐按灌注和 MAP 目标滴定；本站暂不固化具体配液浓度/泵速，优先服从本机构标准浓度。'], cautions:['可在合适外周静脉先启动以避免延迟，但应严密观察外渗风险并尽快建立合适通路。']},
+    '葡萄糖': {status:'verified', sourceIds:['ada2026'], indications:['低血糖'], doses:['能吞咽：多数成人先给予 15 g 快速吸收碳水/葡萄糖，15 分钟后复测并按需重复。','不能吞咽/意识障碍：静脉葡萄糖或胰高血糖素，具体制剂剂量按本机构方案和说明书。'], cautions:['纠正后必须继续观察复发，尤其长效胰岛素/磺脲类、肝肾功能不全等。']},
+    '阿司匹林': {status:'verified', sourceIds:['firstAid2024','acs2025'], indications:['疑似 ACS 的部分成人'], doses:['清醒成人非创伤性急性胸痛，无过敏/明确禁忌时可咀嚼 162–325 mg。'], cautions:['怀疑主动脉夹层、活动性严重出血或明确禁忌时不可机械使用。']},
+    '沙丁胺醇': {status:'verified', sourceIds:['gina2026'], indications:['哮喘急性发作'], doses:['成人重症：6–10 喷（100 μg/喷）pMDI+储雾罐，或 5 mg 雾化；必要时每 20–30 分钟重复。'], cautions:['同时评估严重程度；危及生命表现不能仅靠反复雾化拖延转诊。']},
+    '异丙托溴铵': {status:'verified', sourceIds:['gina2026'], indications:['中重度哮喘急性发作，作为 SABA 加用'], doses:['重症路径中可每次沙丁胺醇时加 4 喷，最多 3 次；制剂规格需按实际药品核对。'], cautions:['不是替代 SABA 的单药急救方案。']},
+    '泼尼松龙': {status:'verified', sourceIds:['gina2026'], indications:['除轻度以外的哮喘急性发作'], doses:['成人 40–50 mg 每日晨服，5–7 天。'], cautions:['短疗程通常无需逐渐减量；仍需结合禁忌、合并症和本地规范。']},
+    '腺苷': {status:'verified', sourceIds:['ahaAlgorithms2025'], indications:['稳定规则窄 QRS 心动过速；部分规则单形宽 QRS 心动过速'], doses:['首剂 6 mg 快速 IV 推注并立即盐水冲管；必要时第二剂 12 mg。'], cautions:['不稳定患者优先同步电复律；宽 QRS 仅限规则单形节律考虑。']},
+    '左乙拉西坦': {status:'verified-partial', sourceIds:['nice2025'], indications:['2 剂苯二氮䓬类后仍持续的惊厥性癫痫持续状态，二线选项之一'], doses:['NICE NG217 明确其为二线静脉选项，但本站暂不固化具体负荷剂量，待与本地急救方案/说明书双重核验。'], cautions:['持续惊厥需并行高级生命支持与专家升级，不能仅等待药物起效。']}
+  }
+};
