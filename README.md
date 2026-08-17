@@ -10,7 +10,7 @@ https://raw.githack.com/tinnxq-alt/emergency-care-assistant/preview/index.html
 
 ## v0.4 临床内容层
 
-新增 `clinical-data.js`、`clinical.js`、`clinical.css`，把产品原型升级为“来源绑定的临床摘要卡”。每张已核验卡展示：
+新增来源绑定的临床摘要卡和可视化核验状态。每张已核验卡展示：
 
 - 核验状态、核验日期、指南版本
 - 临床摘要与红旗征象
@@ -18,6 +18,8 @@ https://raw.githack.com/tinnxq-alt/emergency-care-assistant/preview/index.html
 - 已核验的关键剂量/参数
 - 禁忌、易错点和安全提醒
 - 可直接打开的一手官方指南来源
+
+诊断入口和抢救药物列表会直接显示“已核验 / 部分核验 / 已绑定来源 / 待核验”标识，避免详情页与列表状态不一致。
 
 首批已接入：
 
