@@ -1,5 +1,5 @@
 (() => {
-  const D=window.EMERGENCY_DATA, C=window.CLINICAL_DATA;
+  const D=window.EMERGENCY_DATA, C=window.CLINICAL_DATA, CART=window.CRASH_CART;
   if(!D) return;
   const STORAGE='emergency_generic_content_edits_v1';
   const esc=(s='')=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -11,11 +11,12 @@
 
   const criticalNames=()=>new Set((D.critical||[]).map(x=>x.name));
   const drugNames=()=>new Set((D.drugs||[]).map(x=>x.name));
+  const cartDrugNames=()=>new Set((CART?.drugs||[]).flatMap(x=>[x.name,x.clinicalKey].filter(Boolean)));
   const isGenericCard=(title)=>{
     if(C?.topics?.[title]||C?.drugs?.[title]||C?.algorithms?.[title]) return false;
-    return (D.complaint||[]).includes(title)||(D.diagnosis||[]).includes(title)||(D.flows||[]).includes(title)||criticalNames().has(title)||drugNames().has(title);
+    return (D.complaint||[]).includes(title)||(D.diagnosis||[]).includes(title)||(D.flows||[]).includes(title)||criticalNames().has(title)||drugNames().has(title)||cartDrugNames().has(title);
   };
-  const labelFor=(title)=> (D.flows||[]).includes(title)?'普通流程内容':drugNames().has(title)?'待核验药物本机内容':'普通急症/主诉内容';
+  const labelFor=(title)=> (D.flows||[]).includes(title)?'普通流程内容':(drugNames().has(title)||cartDrugNames().has(title))?'待核验/本院库存药物本机内容':'普通急症/主诉内容';
 
   function modal(title,subtitle,html){
     titleEl.textContent=title;document.querySelector('#modalSubtitle').textContent=subtitle||'';content.innerHTML=html;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');
