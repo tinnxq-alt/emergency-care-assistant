@@ -1,4 +1,4 @@
-const CACHE='emergency-care-assistant-v04-clinical-2';
+const CACHE='emergency-care-assistant-v04-clinical-3';
 const ASSETS=['./','./index.html','./styles.css','./enhancements.css','./clinical.css','./clinical-decorators.css','./data.js','./clinical-data.js','./app.js','./enhancements.js','./clinical.js','./clinical-decorators.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));self.skipWaiting();});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim();});
