@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#c9363c" />
-  <meta name="description" content="急救诊疗助手：基层急诊、抢救与值班工作台权威指南扩展预览版" />
-  <title>急救诊疗助手 v0.5 · 权威指南扩展预览</title>
+  <meta name="description" content="急救诊疗助手：基层急诊、抢救与值班工作台多指南临床核验预览版" />
+  <title>急救诊疗助手 v0.6 · 多指南临床扩展预览</title>
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="./styles.css" />
@@ -20,9 +20,9 @@
         <div class="brand-mark">✚</div>
         <div><h1>急救诊疗助手</h1><p>基层急诊 · 抢救 · 值班工作台</p></div>
       </div>
-      <span class="version">v0.5 指南扩展预览</span>
+      <span class="version">v0.6 多指南临床预览</span>
     </header>
-    <div class="safety-banner">⚠ 开发预览版：绿色“已核验”内容已绑定权威指南及版本；黄色“部分核验/来源绑定”内容仍保留参数锁定。所有内容仍需结合患者具体情况、本机构制度、药品说明书和上级医院转诊路径，不替代临床判断。</div>
+    <div class="safety-banner">⚠ 开发预览版：绿色“已核验”内容已绑定权威指南及版本；黄色“部分核验/来源绑定”内容仍保留参数锁定。卒中溶栓、主动脉综合征、抗凝逆转等复杂高风险治疗必须进入专门流程，本站不会压缩成单一按钮。所有内容仍需结合患者具体情况、本机构制度、药品说明书和上级医院转诊路径。</div>
     <section class="hero">
       <div class="search-box"><span>⌕</span><input id="globalSearch" placeholder="搜索主诉、急症、药物、流程、工具…" autocomplete="off" /><button id="searchBtn">搜索</button></div>
       <button class="red-action" data-action="open-critical">立即抢救</button>
@@ -35,7 +35,7 @@
         <article class="panel"><div class="panel-head"><h2>急诊处理骨架</h2><span>固定 5 步</span></div><div class="flow-grid"><div class="flow-step"><b>1</b><h3>快速评估</h3><p>意识、气道、呼吸、循环、生命体征与现场安全。</p></div><div class="flow-step"><b>2</b><h3>识别红旗</h3><p>判断是否需要立即抢救、升级监护或紧急转诊。</p></div><div class="flow-step"><b>3</b><h3>首要处置</h3><p>优先处理威胁生命的问题，再进入病因判断。</p></div><div class="flow-step"><b>4</b><h3>检查复评</h3><p>必要检查、动态复评、疗效与不良反应观察。</p></div><div class="flow-step"><b>5</b><h3>去向记录</h3><p>留观、转诊、住院、离院与抢救记录形成闭环。</p></div></div></article>
         <aside class="panel"><div class="panel-head"><h2>值班待办</h2><span id="todoCount">0 项</span></div><div class="todo-add"><input id="todoInput" placeholder="新增待办…" /><button id="addTodoBtn">添加</button></div><ul id="todoList" class="todo-list"></ul></aside>
       </section>
-      <section class="section"><div class="section-head"><div><h2>内容安全状态</h2><p>核验状态直接显示在产品中</p></div></div><div class="status-grid"><div class="status-card"><strong>急症流程</strong><span class="status partial">持续扩展</span><p>已覆盖心搏骤停、ACS、严重过敏、脓毒症、低血糖、癫痫持续状态、哮喘，并新增严重创伤/大出血、肺栓塞等指南卡。</p></div><div class="status-card"><strong>抢救用药</strong><span class="status partial">分批核验中</span><p>新增氨甲环酸、纳洛酮和毒物场景用药核验；未核验的高风险剂量继续锁定。</p></div><div class="status-card"><strong>计算工具</strong><span class="status partial">部分可用</span><p>仅开放通用演示工具，高风险计算仍不自动给出临床结论。</p></div><div class="status-card"><strong>病历模板</strong><span class="status ready">原型可用</span><p>结构化记录模板可体验；不上传患者数据。</p></div></div></section>
+      <section class="section"><div class="section-head"><div><h2>内容安全状态</h2><p>核验状态直接显示在产品中</p></div></div><div class="status-grid"><div class="status-card"><strong>急症流程</strong><span class="status partial">第三批已接入</span><p>新增缺血性卒中、脑出血、主动脉综合征、DKA/HHS、高钾、热射病、溺水和上消化道出血。</p></div><div class="status-card"><strong>抢救用药</strong><span class="status partial">持续核验</span><p>新增氯化钙、葡萄糖酸钙和高钾/DKA 胰岛素用法；复杂药物继续保留场景化警示。</p></div><div class="status-card"><strong>计算工具</strong><span class="status partial">部分可用</span><p>仅开放通用演示工具，高风险计算仍不自动给出临床结论。</p></div><div class="status-card"><strong>病历模板</strong><span class="status ready">原型可用</span><p>结构化记录模板可体验；不上传患者数据。</p></div></div></section>
     </main>
   </div>
   <nav class="mobile-nav"><button data-scroll="top"><b>⌂</b><span>首页</span></button><button data-open="急症处置"><b>🚑</b><span>急症</span></button><button data-open="抢救用药"><b>💉</b><span>用药</span></button><button data-open="待办"><b>✓</b><span>待办</span></button></nav>
@@ -43,10 +43,12 @@
   <script src="./data.js"></script>
   <script src="./clinical-data.js"></script>
   <script src="./clinical-batch2.js"></script>
+  <script src="./clinical-batch3.js"></script>
   <script src="./app.js"></script>
   <script src="./enhancements.js"></script>
   <script src="./clinical.js"></script>
   <script src="./clinical-batch2-ui.js"></script>
+  <script src="./clinical-batch3-ui.js"></script>
   <script src="./clinical-decorators.js"></script>
 </body>
 </html>
