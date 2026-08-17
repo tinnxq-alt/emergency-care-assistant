@@ -1,0 +1,13 @@
+{
+  "name": "急救诊疗助手",
+  "short_name": "急救助手",
+  "description": "基层急诊、抢救与值班工作台开发预览版",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#c9363c",
+  "lang": "zh-CN",
+  "icons": [
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
