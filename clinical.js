@@ -73,24 +73,24 @@
   function algorithmCard(name){
     const a=C.algorithms[name]; if(!a) return;
     const [label,kind]=statusLabel(a.status);
-    openModal(name,'AHA 2025 围心搏骤停算法摘要',`
+    openModal(name,'临床流程摘要',`
       <div class="clinical-meta-line"><span class="clinical-badge ${kind}">${label}</span></div>
       ${list('识别与处置',a.points)}${list('关键剂量',a.doses,'dose-list')}
       <h3 class="clinical-section-title">指南来源</h3>${sourceHtml(a.sourceIds)}
-      <div class="clinical-note">电复律/起搏能量、镇静和设备操作按具体除颤监护设备、本机构流程及患者情况执行。</div>`);
+      <div class="clinical-note">设备操作、药物细节和升级策略仍应按具体指南、本机构流程及患者情况执行。</div>`);
   }
   function openSourceLibrary(){
     const sources=Object.values(C.sources);
     openModal('权威指南来源库',`当前绑定 ${sources.length} 个一手来源`, `<div class="source-library">${sources.map(s=>`<a class="source-card" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer"><strong>${esc(s.name)}</strong><small>${esc(s.org)} · ${esc(s.year)}</small>${s.note?`<small>${esc(s.note)}</small>`:''}</a>`).join('')}</div><div class="clinical-note">本站只保存原创结构化摘要和必要的临床参数，不复制受版权保护的整份指南、图表或大段原文。</div>`);
   }
   function injectStatus(){
-    const main=document.querySelector('main'); if(!main) return;
+    const main=document.querySelector('main'); if(!main||document.querySelector('#clinicalVerification')) return;
     const verifiedTopics=Object.values(C.topics).filter(x=>x.status==='verified').length;
     const boundTopics=Object.values(C.topics).filter(x=>x.status==='source-bound').length;
     const verifiedDrugs=Object.values(C.drugs).filter(x=>x.status==='verified').length;
     const section=document.createElement('section'); section.className='section'; section.id='clinicalVerification';
     section.innerHTML=`<div class="clinical-status-panel"><div class="section-head"><div><h2>指南核验进度</h2><p>每条临床内容显示核验状态、版本和官方来源</p></div><button class="guideline-btn" id="openGuidelinesBtn">查看来源库</button></div><div class="clinical-progress"><div class="metric"><b>${verifiedTopics}</b><span>已核验急症卡</span></div><div class="metric"><b>${boundTopics}</b><span>已绑定来源待解锁</span></div><div class="metric"><b>${verifiedDrugs}</b><span>已核验药物卡</span></div><div class="metric"><b>${Object.keys(C.sources).length}</b><span>权威一手来源</span></div></div></div>`;
-    const first=main.querySelector('.section'); first?.insertAdjacentElement('beforebegin',section);
+    const first=main.querySelector('.section,.page-section'); first?.insertAdjacentElement('beforebegin',section);
     $('#openGuidelinesBtn')?.addEventListener('click',openSourceLibrary);
   }
 
