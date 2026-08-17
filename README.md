@@ -2,6 +2,12 @@
 
 这是一个独立的基层急诊、抢救与值班工作台项目，与“基层用药助手”分开维护、分开部署、分开回退。
 
+## 开发预览网址
+
+https://raw.githack.com/tinnxq-alt/emergency-care-assistant/preview/index.html
+
+> 这是 `preview` 分支的开发预览地址，不代表正式临床发布。正式 GitHub Pages 地址将在仓库 Pages 功能启用后切换到 `github.io`。
+
 ## 当前已完成
 
 - 响应式首页与移动端底部导航
@@ -34,10 +40,6 @@
 - `agent/emergency-assistant-v0.2`：当前 v0.3 开发预览分支（沿用原分支名以保留 PR 历史）。
 - `preview`：公开开发预览指针，可随开发分支更新，不代表正式发布。
 - 所有功能继续保留在 Draft PR，确认满意后再决定是否合并。
-
-## 开发预览
-
-公开预览使用 `preview` 分支。正式 GitHub Pages 站点将在仓库 Pages 功能启用后切换到 `github.io` 地址。
 
 ## 下一步
 
