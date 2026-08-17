@@ -35,7 +35,7 @@
 
   function injectToolbar(type,key,rerender){
     const c=document.querySelector('#modalContent'), t=document.querySelector('#modalTitle');
-    if(!c||!t||c.querySelector('.edit-toolbar')) return;
+    if(!c||!t||c.querySelector('.edit-toolbar')||c.querySelector('#clinicalEditForm')) return;
     const id=idFor(type,key), changed=!!edits[id], change=edits[id]||{};
     if(change.displayTitle) t.textContent=change.displayTitle;
     const bar=document.createElement('div');bar.className='edit-toolbar';
@@ -83,6 +83,18 @@
   UI.topicCard=function(key){applyOne('topic',key);original.topicCard(key);injectToolbar('topic',key,UI.topicCard);};
   UI.drugCard=function(key){applyOne('drug',key);original.drugCard(key);injectToolbar('drug',key,UI.drugCard);};
   UI.algorithmCard=function(key){applyOne('algorithm',key);original.algorithmCard(key);injectToolbar('algorithm',key,UI.algorithmCard);};
+
+  function resolveOpenCard(){
+    const overlay=document.querySelector('#overlay'), title=document.querySelector('#modalTitle')?.textContent?.trim()||'', content=document.querySelector('#modalContent');
+    if(!overlay?.classList.contains('open')||!title||!content||content.querySelector('#clinicalEditForm')||content.querySelector('.edit-manager-list')) return;
+    for(const [type,col] of [['topic','topics'],['drug','drugs'],['algorithm','algorithms']]){
+      if(C[col]?.[title]){injectToolbar(type,title,UI[type+'Card']);return;}
+      const match=Object.keys(C[col]||{}).find(key=>edits[idFor(type,key)]?.displayTitle===title);
+      if(match){injectToolbar(type,match,UI[type+'Card']);return;}
+    }
+  }
+  const modalNode=document.querySelector('#overlay');
+  if(modalNode){const observer=new MutationObserver(()=>queueMicrotask(resolveOpenCard));observer.observe(modalNode,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','aria-hidden']});}
 
   function openManager(){
     const rows=Object.keys(edits).sort().map(id=>{const p=id.indexOf(':'),type=id.slice(0,p),key=id.slice(p+1);return `<div class="edit-manager-row"><div><strong>${esc(edits[id].displayTitle||key)}</strong><small>${type==='topic'?'急症卡':type==='drug'?'药物卡':'流程卡'}</small></div><button data-reset-edit="${esc(id)}">恢复默认</button></div>`;}).join('');
