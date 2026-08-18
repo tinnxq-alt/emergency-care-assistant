@@ -20,7 +20,7 @@
     if(status==='verified') return ['已按权威指南核验','verified'];
     if(status==='verified-partial') return ['部分核验','partial'];
     if(status==='source-bound') return ['已绑定最新来源 · 参数待解锁','bound'];
-    if(status==='inventory-review') return ['仅库存 · 待本院核验','partial'];
+    if(status==='inventory-review') return ['未建立指南急救卡','partial'];
     return ['待核验','partial'];
   }
   function sourceHtml(ids=[]){
@@ -50,6 +50,7 @@
     openModal(key,`临床摘要 · 核验日期 ${C.meta.verifiedAt}`,`
       <div class="clinical-meta-line"><span class="clinical-badge ${kind}">${label}</span><span class="badge">成人为主</span><span class="badge">来源已绑定</span></div>
       <div class="clinical-summary">${esc(t.summary||'')}</div>
+      ${field('核验说明',t.verificationNote)}
       ${list('红旗征象 / 立即升级条件',t.redFlags,'clinical-alert')}
       ${list('首要处置与流程',t.steps)}
       ${list('关键剂量 / 参数',t.doses,'dose-list')}
@@ -63,10 +64,11 @@
   function drugCard(name){
     const d=C.drugs[name]; if(!d) return;
     const [label,kind]=statusLabel(d.status);
-    const noModernMap=d.status==='inventory-review'?'<div class="clinical-note">本状态仅表示：在本轮已审计的现代急救指南中没有建立自动急救映射。它不等同于“国内说明书无适应证”或“绝对禁止使用”；如本院继续使用，应核对当前批准说明书、药事制度和院内路径。</div>':'';
+    const noModernMap=d.status==='inventory-review'?'<div class="clinical-note">当前没有为该药建立现代指南急救卡。这不等同于说明书无适应证或绝对禁止使用；如临床考虑使用，应按当前批准说明书、本院路径及患者具体情况判断。</div>':'';
     openModal(name,'抢救药物临床卡',`
       <div class="clinical-meta-line"><span class="clinical-badge ${kind}">${label}</span><span class="badge">高风险药物需复核</span></div>
       ${noModernMap}
+      ${field('核验说明',d.verificationNote)}
       ${list('适应证',d.indications)}
       ${list('关键剂量',d.doses,'dose-list')}
       ${list('禁忌 / 慎用 / 易错点',d.cautions,'clinical-alert')}
@@ -92,7 +94,7 @@
     const boundTopics=Object.values(C.topics).filter(x=>x.status==='source-bound').length;
     const verifiedDrugs=Object.values(C.drugs).filter(x=>x.status==='verified').length;
     const section=document.createElement('section'); section.className='section'; section.id='clinicalVerification';
-    section.innerHTML=`<div class="clinical-status-panel"><div class="section-head"><div><h2>指南核验进度</h2><p>每条临床内容显示核验状态、版本和官方来源</p></div><button class="guideline-btn" id="openGuidelinesBtn">查看来源库</button></div><div class="clinical-progress"><div class="metric"><b>${verifiedTopics}</b><span>已核验急症卡</span></div><div class="metric"><b>${boundTopics}</b><span>已绑定来源待解锁</span></div><div class="metric"><b>${verifiedDrugs}</b><span>已核验药物卡</span></div><div class="metric"><b>${Object.keys(C.sources).length}</b><span>权威一手来源</span></div></div></div>`;
+    section.innerHTML=`<div class="clinical-status-panel"><div class="section-head"><div><h2>指南核验进度</h2><p>只显示临床内容的核验状态；本院库存不设置状态标签</p></div><button class="guideline-btn" id="openGuidelinesBtn">查看来源库</button></div><div class="clinical-progress"><div class="metric"><b>${verifiedTopics}</b><span>已核验急症卡</span></div><div class="metric"><b>${boundTopics}</b><span>已绑定来源待解锁</span></div><div class="metric"><b>${verifiedDrugs}</b><span>已核验药物卡</span></div><div class="metric"><b>${Object.keys(C.sources).length}</b><span>权威一手来源</span></div></div></div>`;
     const first=main.querySelector('.section,.page-section'); first?.insertAdjacentElement('beforebegin',section);
     $('#openGuidelinesBtn')?.addEventListener('click',openSourceLibrary);
   }
