@@ -9,6 +9,7 @@
     if(status==='verified') return ['✓ 已核验','verified'];
     if(status==='verified-partial') return ['◐ 部分核验','partial'];
     if(status==='source-bound') return ['↗ 已绑定来源','bound'];
+    if(status==='inventory-review') return ['本院库存待核验','pending'];
     return ['待核验','pending'];
   }
   function decorate(){
@@ -21,9 +22,11 @@
     });
     document.querySelectorAll('[data-topic],[data-critical]').forEach(el=>{
       const raw=el.dataset.topic||el.dataset.critical; const key=safeTopicMap[raw]; const t=key&&C.topics[key];
-      if(!t || el.querySelector('.clinical-card-mark')) return;
+      if(!t) return;
       const [text,kind]=label(t.status);
-      const mark=document.createElement('span'); mark.className=`clinical-card-mark ${kind}`; mark.textContent=text; el.appendChild(mark);
+      let mark=el.querySelector('.clinical-card-mark');
+      if(!mark){ mark=document.createElement('span'); el.appendChild(mark); }
+      mark.className=`clinical-card-mark ${kind}`; mark.textContent=text;
     });
   }
   const root=document.querySelector('#modalContent');
@@ -33,4 +36,14 @@
   const critical=document.querySelector('#criticalGrid');
   if(critical) new MutationObserver(decorate).observe(critical,{childList:true,subtree:true});
   decorate();
+
+  // v0.19 is intentionally loaded after all historical batches/audits and after the clinical UI.
+  // This preserves rollback history while letting the latest evidence/status corrections take precedence.
+  if(!document.querySelector('script[data-clinical-audit-v019]')){
+    const s=document.createElement('script');
+    s.src='./clinical-audit-v019.js';
+    s.dataset.clinicalAuditV019='1';
+    s.onload=decorate;
+    document.head.appendChild(s);
+  }
 })();
