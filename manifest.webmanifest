@@ -1,7 +1,7 @@
 {
   "name": "急救诊疗助手",
   "short_name": "急救助手",
-  "description": "基层急诊、抢救与值班工作台 v0.14；自动关联基层用药助手病房166种药品、本院抢救车库存与AHA 2025心律失常急救卡",
+  "description": "基层急诊、抢救与值班工作台 v0.15；已完成一轮既有高风险临床内容复核，并自动关联病房166种药品与本院抢救车库存",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f4f6fa",
