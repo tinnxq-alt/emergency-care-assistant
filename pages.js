@@ -1,6 +1,7 @@
 (() => {
   const D=window.EMERGENCY_DATA;
   const CART=window.CRASH_CART;
+  const AUDIT=window.CRASH_CART_AUDIT;
   if(!D) return;
   const page=document.body.dataset.page;
   const $=s=>document.querySelector(s);
@@ -10,6 +11,7 @@
   const closeModal=()=>{overlay?.classList.remove('open');overlay?.setAttribute('aria-hidden','true');};
   $('#closeModalBtn')?.addEventListener('click',closeModal);
   overlay?.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+  const auditFor=item=>AUDIT?.get?.(item)||item?.audit||{};
 
   function genericEmergency(name,critical=false){
     const sections=['立即评估','红旗征象','首要处置','必要检查/鉴别','动态复评','转诊/留观','记录要点'];
@@ -18,7 +20,8 @@
   function genericDrug(name){
     const item=(D.drugs||[]).find(x=>x.name===name);
     const stock=(CART?.drugs||[]).find(x=>x.name===name||x.clinicalKey===name);
-    const stockHtml=stock?`<section class="modal-card"><h3>本院抢救车库存</h3><p><strong>${esc(stock.name)}</strong> · ${esc(stock.spec)} · ${esc(stock.qty)} · ${esc(stock.layer)}</p><p>来源：${esc(CART.meta.source)}，录入日期 ${esc(CART.meta.recordedAt)}。库存信息不代表指南推荐。</p></section>`:'';
+    const a=stock?auditFor(stock):{};
+    const stockHtml=stock?`<section class="modal-card"><h3>本院抢救车库存</h3><p><strong>${esc(stock.name)}</strong> · ${esc(stock.spec)} · ${esc(stock.qty)} · ${esc(stock.layer)}</p>${a.label?`<p><strong>审计状态：</strong>${esc(a.label)}${a.note?` · ${esc(a.note)}`:''}</p>`:''}${a.warning?`<div class="edit-warning">⚠ ${esc(a.warning)}</div>`:''}<p>来源：${esc(CART.meta.source)}，录入日期 ${esc(CART.meta.recordedAt)}。库存信息不代表指南推荐。</p></section>`:'';
     openModal(name,item?.group||'抢救用药',`${stockHtml}<div class="callout">此药物尚无完整结构化临床卡。剂量、稀释、泵速等高风险字段在权威核验前保持锁定；你可以添加本机备注，但应重新临床复核。</div>${['适应证','成人剂量','给药途径','稀释/泵速','禁忌与慎用','不良反应','特殊人群','来源与更新时间'].map(x=>`<section class="modal-card"><h3>${x}</h3><p>待权威来源核验或本机补充。</p></section>`).join('')}`);
   }
 
@@ -42,13 +45,15 @@
         return !q||text.includes(q);
       });
       const groups=new Map();arr.forEach(x=>{if(!groups.has(x.group))groups.set(x.group,[]);groups.get(x.group).push(x);});
-      return [...groups.entries()].map(([group,items])=>`<section class="drug-group"><h3>${esc(group)}</h3><div class="page-grid">${items.map(x=>{const stock=stockFor(x.name);return `<button class="page-item" data-drug="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${x.verified===true?'已核验':x.verified==='partial'?'部分核验':'待核验'}${stock?` · 本院有药 ${esc(stock.spec)} ${esc(stock.qty)}`:''}</small></div><span>→</span></button>`;}).join('')}</div></section>`).join('');
+      return [...groups.entries()].map(([group,items])=>`<section class="drug-group"><h3>${esc(group)}</h3><div class="page-grid">${items.map(x=>{const stock=stockFor(x.name);const a=stock?auditFor(stock):{};return `<button class="page-item" data-drug="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${x.verified===true?'已核验':x.verified==='partial'?'部分核验':'待核验'}${stock?` · 本院有药 ${esc(stock.spec)} ${esc(stock.qty)}`:''}${a.label?` · ${esc(a.label)}`:''}</small></div><span>→</span></button>`;}).join('')}</div></section>`).join('');
     };
     const renderCart=q=>{
-      const arr=(CART?.drugs||[]).filter(x=>!q||`${x.name} ${x.spec} ${x.qty} ${x.layer}`.toLowerCase().includes(q));
+      const arr=(CART?.drugs||[]).filter(x=>{const a=auditFor(x);return !q||`${x.name} ${x.spec} ${x.qty} ${x.layer} ${a.label||''} ${a.note||''}`.toLowerCase().includes(q);});
       const groups=new Map();arr.forEach(x=>{if(!groups.has(x.layer))groups.set(x.layer,[]);groups.get(x.layer).push(x);});
-      const note=`<section class="page-section"><div class="clinical-note"><strong>${esc(CART?.meta?.name||'本院抢救车')}</strong>：${esc(CART?.meta?.note||'')}</div></section>`;
-      const body=[...groups.entries()].map(([layer,items])=>`<section class="drug-group"><h3>${esc(layer)}</h3><div class="page-grid">${items.map(x=>`<button class="page-item" data-drug="${esc(x.clinicalKey||x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.spec)} · ${esc(x.qty)} · 本院有药</small></div><span>→</span></button>`).join('')}</div></section>`).join('');
+      const counts=AUDIT?.counts?.()||{};
+      const auditSummary=AUDIT?`<div class="clinical-note"><strong>v0.17 抢救车临床审计</strong><br>现代核心 ${counts.core||0} 项 · 特定场景 ${counts.specific||0} 项 · 支持性液体 ${counts.support||0} 项 · 仅库存待本院核验 ${counts.review||0} 项。<br><small>“仅库存待本院核验”不等于禁止使用，只表示本轮没有把它自动映射成现代急救指南一线药物；如本院继续使用，应按当前说明书和院内制度单独核验。</small></div>`:'';
+      const note=`<section class="page-section"><div class="clinical-note"><strong>${esc(CART?.meta?.name||'本院抢救车')}</strong>：${esc(CART?.meta?.note||'')}</div>${auditSummary}</section>`;
+      const body=[...groups.entries()].map(([layer,items])=>`<section class="drug-group"><h3>${esc(layer)}</h3><div class="page-grid">${items.map(x=>{const a=auditFor(x);return `<button class="page-item" data-drug="${esc(x.clinicalKey||x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.spec)} · ${esc(x.qty)} · ${a.label?esc(a.label):'本院有药'}</small>${a.note?`<small>${esc(a.note)}</small>`:''}${a.warning?`<small>⚠ ${esc(a.warning)}</small>`:''}</div><span>→</span></button>`;}).join('')}</div></section>`).join('');
       return note+body;
     };
     const render=()=>{const q=(search?.value||'').trim().toLowerCase();host.innerHTML=(mode==='cart'?renderCart(q):renderAll(q))||'<div class="page-empty">没有匹配药物</div>';};
