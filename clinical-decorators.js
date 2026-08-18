@@ -9,7 +9,7 @@
     if(status==='verified') return ['✓ 已核验','verified'];
     if(status==='verified-partial') return ['◐ 部分核验','partial'];
     if(status==='source-bound') return ['↗ 已绑定来源','bound'];
-    if(status==='inventory-review') return ['本院库存待核验','pending'];
+    if(status==='inventory-review') return ['未建立指南急救卡','pending'];
     return ['待核验','pending'];
   }
   function decorate(){
@@ -37,8 +37,6 @@
   if(critical) new MutationObserver(decorate).observe(critical,{childList:true,subtree:true});
   decorate();
 
-  // v0.19 is intentionally loaded after all historical batches/audits and after the clinical UI.
-  // This preserves rollback history while letting the latest evidence/status corrections take precedence.
   if(!document.querySelector('script[data-clinical-audit-v019]')){
     const s=document.createElement('script');
     s.src='./clinical-audit-v019.js';
