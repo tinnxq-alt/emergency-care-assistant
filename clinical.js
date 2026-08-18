@@ -20,6 +20,7 @@
     if(status==='verified') return ['已按权威指南核验','verified'];
     if(status==='verified-partial') return ['部分核验','partial'];
     if(status==='source-bound') return ['已绑定最新来源 · 参数待解锁','bound'];
+    if(status==='inventory-review') return ['仅库存 · 待本院核验','partial'];
     return ['待核验','partial'];
   }
   function sourceHtml(ids=[]){
@@ -62,8 +63,10 @@
   function drugCard(name){
     const d=C.drugs[name]; if(!d) return;
     const [label,kind]=statusLabel(d.status);
+    const noModernMap=d.status==='inventory-review'?'<div class="clinical-note">本状态仅表示：在本轮已审计的现代急救指南中没有建立自动急救映射。它不等同于“国内说明书无适应证”或“绝对禁止使用”；如本院继续使用，应核对当前批准说明书、药事制度和院内路径。</div>':'';
     openModal(name,'抢救药物临床卡',`
       <div class="clinical-meta-line"><span class="clinical-badge ${kind}">${label}</span><span class="badge">高风险药物需复核</span></div>
+      ${noModernMap}
       ${list('适应证',d.indications)}
       ${list('关键剂量',d.doses,'dose-list')}
       ${list('禁忌 / 慎用 / 易错点',d.cautions,'clinical-alert')}
