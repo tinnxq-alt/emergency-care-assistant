@@ -1,7 +1,7 @@
 {
   "name": "急救诊疗助手",
   "short_name": "急救助手",
-  "description": "基层急诊、抢救与值班工作台 v0.17；完成本院抢救车18项逐项临床深审，并保留病房166种药品自动关联、库存盘点与既有高风险临床审计",
+  "description": "基层急诊、抢救与值班工作台 v0.18；第三轮核验已有内容，完成哮喘、COPD急性加重、肾盂肾炎和癫痫持续状态复核，并保留病房166种药品与抢救车18项审计",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f4f6fa",
