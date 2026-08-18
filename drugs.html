@@ -4,21 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#c9363c" />
-  <title>用药 · 急救诊疗助手 v0.15</title>
+  <title>用药 · 急救诊疗助手 v0.16</title>
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./enhancements.css" />
-  <link rel="stylesheet" href="./clinical.css" />
-  <link rel="stylesheet" href="./clinical-decorators.css" />
-  <link rel="stylesheet" href="./editable.css" />
-  <link rel="stylesheet" href="./navigation.css" />
-  <link rel="stylesheet" href="./crash-cart-manager.css" />
+  <link rel="stylesheet" href="./styles.css" /><link rel="stylesheet" href="./enhancements.css" /><link rel="stylesheet" href="./clinical.css" /><link rel="stylesheet" href="./clinical-decorators.css" /><link rel="stylesheet" href="./editable.css" /><link rel="stylesheet" href="./navigation.css" /><link rel="stylesheet" href="./crash-cart-manager.css" />
 </head>
 <body data-page="drugs">
   <div class="subpage-shell">
-    <header class="topbar"><div class="brand"><div class="brand-mark">✚</div><div><h1>急救诊疗助手</h1><p>抢救用药独立页面</p></div></div><span class="version">v0.15</span></header>
-    <div class="safety-banner">⚠ “本院抢救车”和“病房药库”只表示可获得性；临床卡已按 2026-08-18 本轮核验修订，剂量、浓度、泵速、相容性和特殊人群用法仍需结合完整指南、本机构制度和实物标签。</div>
+    <header class="topbar"><div class="brand"><div class="brand-mark">✚</div><div><h1>急救诊疗助手</h1><p>抢救用药独立页面</p></div></div><span class="version">v0.16</span></header>
+    <div class="safety-banner">⚠ 危重中毒用药已按 AHA 2025 第二轮深审：可直接核对的高剂量胰岛素、碳酸氢钠等成人范围已解锁，但仅用于危及生命中毒监护场景；本院抢救车/病房有药只代表可获得性。</div>
     <div class="subpage-head"><div><h1>抢救用药</h1><p>指南药物、本院抢救车、病房 166 种药品三层自动关联。</p></div></div>
     <div class="page-search"><input id="drugSearch" placeholder="搜索药名、通用名、类别或规格…" autocomplete="off" /></div>
     <div class="page-tabs"><button class="page-chip active" data-drug-mode="all">全部药物</button><button class="page-chip" data-drug-mode="cart">本院抢救车</button></div>
@@ -28,7 +22,7 @@
   <div id="overlay" class="overlay" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalSubtitle"></p></div><button id="closeModalBtn" class="icon-btn">关闭</button></div><div id="modalContent"></div></div></div>
   <script src="./data.js"></script><script src="./data-batch8.js"></script><script src="./data-batch9.js"></script><script src="./crash-cart-data.js"></script>
   <script src="https://tinnxq-alt.github.io/primary-medication-assistant/drugs.js"></script><script src="https://tinnxq-alt.github.io/primary-medication-assistant/catalog-retirements.js"></script>
-  <script src="./clinical-data.js"></script><script src="./clinical-batch2.js"></script><script src="./clinical-batch3.js"></script><script src="./clinical-batch4.js"></script><script src="./clinical-batch5.js"></script><script src="./clinical-batch6.js"></script><script src="./clinical-batch7.js"></script><script src="./clinical-batch8.js"></script><script src="./clinical-batch9.js"></script><script src="./clinical-audit-v015.js"></script>
+  <script src="./clinical-data.js"></script><script src="./clinical-batch2.js"></script><script src="./clinical-batch3.js"></script><script src="./clinical-batch4.js"></script><script src="./clinical-batch5.js"></script><script src="./clinical-batch6.js"></script><script src="./clinical-batch7.js"></script><script src="./clinical-batch8.js"></script><script src="./clinical-batch9.js"></script><script src="./clinical-audit-v015.js"></script><script src="./clinical-audit-v016.js"></script>
   <script src="./crash-cart-manager.js"></script><script src="./pages.js"></script>
   <script src="./clinical.js"></script><script src="./clinical-batch2-ui.js"></script><script src="./clinical-batch3-ui.js"></script><script src="./clinical-batch4-ui.js"></script><script src="./clinical-batch5-ui.js"></script><script src="./clinical-batch6-ui.js"></script><script src="./clinical-batch7-ui.js"></script><script src="./clinical-batch8-ui.js"></script><script src="./clinical-batch9-ui.js"></script><script src="./clinical-decorators.js"></script><script src="./editable.js"></script><script src="./generic-editable.js"></script><script src="./ward-pharmacy-bridge.js"></script>
 </body>
