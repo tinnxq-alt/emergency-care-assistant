@@ -1,0 +1,43 @@
+/* 急救诊疗助手 v0.20 页面布局
+ * 与基层用药助手同风格，不同颜色体系
+ */
+
+.emergency-dashboard {
+  padding: 16px;
+}
+
+.emergency-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.emergency-entry-card {
+  border-radius: 16px;
+  padding: 16px;
+  background: #fff;
+  border-left: 5px solid #c62828;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.emergency-entry-card h3 {
+  margin: 0 0 8px;
+}
+
+.flow-step-card {
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #fff;
+  border-left: 4px solid #1565c0;
+}
+
+.drug-link-card {
+  border-left-color: #ef6c00;
+}
+
+@media(max-width:600px){
+  .emergency-entry-grid{
+    grid-template-columns:1fr;
+  }
+}
