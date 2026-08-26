@@ -60,7 +60,7 @@
 
   function openWorkspace(name){
     if(name === '抢救用药') return openDrugList();
-    if(name === '急救流程') return openListModal('急救流程','流程卡目录',D.flows,'flow');
+    if(name === '急救流程') { window.location.href='./flows.html'; return; }
     if(name === '计算工具') return openTools();
     if(name === '急诊病历') return openRecords();
     if(name === '待办') {

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#c9363c" />
+  <meta name="description" content="急救诊疗助手 v0.20：按临床危险程度进入的急救流程导航工作台" />
+  <title>急救流程 · 急救诊疗助手 v0.20</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./navigation.css" />
+  <link rel="stylesheet" href="./flows.css" />
+  <link rel="stylesheet" href="./utilities.css" />
+</head>
+<body data-page="flows">
+  <div class="subpage-shell">
+    <header class="topbar"><div class="brand"><div class="brand-mark">✚</div><div><h1>急救诊疗助手</h1><p>急救流程工作台</p></div></div><span class="version">v0.20</span></header>
+    <div class="safety-banner">⚠ 流程页用于快速导航，不替代临床判断、院内制度或上级医师意见；未核验的剂量、配液、泵速和操作参数不会在此固化。</div>
+    <div class="subpage-head"><div><h1>急救流程</h1><p id="flowCount">10 个流程入口</p></div></div>
+    <div class="page-search"><label class="sr-only" for="flowSearch">搜索急救流程</label><input id="flowSearch" placeholder="搜索流程、诊断、药物或分流方向…" autocomplete="off" /></div>
+    <main>
+      <section class="flow-overview" aria-label="流程使用说明">
+        <article><h2>按危险程度进入</h2><p>先处理生命威胁，再进入病因分流；同一主诉可能对应多个临床路径。</p></article>
+        <article><h2>资料严格分层</h2><p>指南、本院药品可获得性和个人编辑分开呈现，不把库存当作治疗推荐。</p></article>
+      </section>
+      <section><div id="flowGrid" class="flow-entry-grid"></div></section>
+    </main>
+  </div>
+  <nav class="mobile-nav" aria-label="主要导航"><a href="./index.html"><b>⌂</b><span>首页</span></a><a href="./emergency.html"><b>🚑</b><span>急症</span></a><a class="active" href="./flows.html"><b>🧭</b><span>流程</span></a><a href="./drugs.html"><b>💉</b><span>用药</span></a><a href="./todo.html"><b>✓</b><span>待办</span></a></nav>
+  <div id="flowOverlay" class="overlay" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="flowModalTitle"><div class="modal-head"><div><h2 id="flowModalTitle"></h2><p id="flowModalSubtitle"></p></div><button id="closeFlowModal" class="icon-btn">关闭</button></div><div id="flowModalContent"></div></div></div>
+  <script src="./flow-data.js"></script>
+  <script src="./flows.js"></script>
+  <script src="./sw-register.js"></script>
+</body>
+</html>

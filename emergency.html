@@ -4,27 +4,28 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#c9363c" />
-  <title>急症 · 急救诊疗助手 v0.18</title>
+  <meta name="description" content="急救诊疗助手 v0.20：按红旗、诊断和主诉检索急症临床卡" />
+  <title>急症 · 急救诊疗助手 v0.20</title>
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="./styles.css" /><link rel="stylesheet" href="./enhancements.css" /><link rel="stylesheet" href="./clinical.css" /><link rel="stylesheet" href="./clinical-decorators.css" /><link rel="stylesheet" href="./editable.css" /><link rel="stylesheet" href="./navigation.css" />
+  <link rel="stylesheet" href="./styles.css" /><link rel="stylesheet" href="./enhancements.css" /><link rel="stylesheet" href="./clinical.css" /><link rel="stylesheet" href="./clinical-decorators.css" /><link rel="stylesheet" href="./editable.css" /><link rel="stylesheet" href="./navigation.css" /><link rel="stylesheet" href="./utilities.css" />
 </head>
 <body data-page="emergency">
   <div class="subpage-shell">
-    <header class="topbar"><div class="brand"><div class="brand-mark">✚</div><div><h1>急救诊疗助手</h1><p>急症独立页面</p></div></div><span class="version">v0.18</span></header>
-    <div class="safety-banner">⚠ 第三轮既有内容核验已接入：哮喘急性期氧目标已纠正，COPD急性加重、成人肾盂肾炎和癫痫持续状态完成当前一手指南复核；库存与指南推荐仍严格分层。</div>
+    <header class="topbar"><div class="brand"><div class="brand-mark">✚</div><div><h1>急救诊疗助手</h1><p>急症独立页面</p></div></div><span class="version">v0.20</span></header>
+    <div class="safety-banner">⚠ v0.20 提供急症检索与流程导航；指南内容、本院可获得性和个人编辑继续严格分层。</div>
     <div class="subpage-head"><div><h1>急症</h1><p>先识别红旗，再从主诉或明确诊断进入。</p></div></div>
-    <div class="page-search"><input id="emergencySearch" placeholder="搜索急症、主诉、诊断…" autocomplete="off" /></div>
+    <div class="page-search"><label class="sr-only" for="emergencySearch">搜索急症</label><input id="emergencySearch" placeholder="搜索急症、主诉、诊断…" autocomplete="off" /></div>
     <main>
-      <section class="page-section"><h2>红旗入口</h2><p class="hint">出现生命威胁征象优先抢救和升级，不等待完整诊断。</p><div id="criticalPageGrid" class="page-grid"></div></section>
+      <section class="page-section"><h2>红旗入口</h2><p class="hint">出现生命威胁征象优先抢救和升级，不等待完整诊断。</p><a class="flow-launch" href="./flows.html">进入急救流程工作台 →</a><div id="criticalPageGrid" class="page-grid"></div></section>
       <section class="page-section"><div class="page-tabs"><button class="page-chip active" data-emergency-mode="diagnosis">按诊断</button><button class="page-chip" data-emergency-mode="complaint">按主诉</button></div><div id="emergencyPageGrid" class="page-grid"></div></section>
     </main>
   </div>
-  <nav class="mobile-nav"><a href="./index.html"><b>⌂</b><span>首页</span></a><a class="active" href="./emergency.html"><b>🚑</b><span>急症</span></a><a href="./drugs.html"><b>💉</b><span>用药</span></a><a href="./todo.html"><b>✓</b><span>待办</span></a></nav>
+  <nav class="mobile-nav" aria-label="主要导航"><a href="./index.html"><b>⌂</b><span>首页</span></a><a class="active" href="./emergency.html"><b>🚑</b><span>急症</span></a><a href="./flows.html"><b>🧭</b><span>流程</span></a><a href="./drugs.html"><b>💉</b><span>用药</span></a><a href="./todo.html"><b>✓</b><span>待办</span></a></nav>
   <div id="overlay" class="overlay" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalSubtitle"></p></div><button id="closeModalBtn" class="icon-btn">关闭</button></div><div id="modalContent"></div></div></div>
-  <script src="./data.js"></script><script src="./data-batch8.js"></script><script src="./data-batch9.js"></script>
+  <script src="./data.js"></script><script src="./data-batch8.js"></script><script src="./data-batch9.js"></script><script src="./crash-cart-data.js"></script>
   <script src="https://tinnxq-alt.github.io/primary-medication-assistant/drugs.js"></script><script src="https://tinnxq-alt.github.io/primary-medication-assistant/catalog-retirements.js"></script>
-  <script src="./clinical-data.js"></script><script src="./clinical-batch2.js"></script><script src="./clinical-batch3.js"></script><script src="./clinical-batch4.js"></script><script src="./clinical-batch5.js"></script><script src="./clinical-batch6.js"></script><script src="./clinical-batch7.js"></script><script src="./clinical-batch8.js"></script><script src="./clinical-batch9.js"></script><script src="./clinical-audit-v015.js"></script><script src="./clinical-audit-v016.js"></script><script src="./clinical-audit-v018.js"></script>
+  <script src="./clinical-data.js"></script><script src="./clinical-batch2.js"></script><script src="./clinical-batch3.js"></script><script src="./clinical-batch4.js"></script><script src="./clinical-batch5.js"></script><script src="./clinical-batch6.js"></script><script src="./clinical-batch7.js"></script><script src="./clinical-batch8.js"></script><script src="./clinical-batch9.js"></script><script src="./clinical-audit-v015.js"></script><script src="./clinical-audit-v016.js"></script><script src="./clinical-audit-v018.js"></script><script src="./clinical-audit-v019.js" data-clinical-audit-v019></script>
   <script src="./pages.js"></script>
   <script src="./clinical.js"></script><script src="./clinical-batch2-ui.js"></script><script src="./clinical-batch3-ui.js"></script><script src="./clinical-batch4-ui.js"></script><script src="./clinical-batch5-ui.js"></script><script src="./clinical-batch6-ui.js"></script><script src="./clinical-batch7-ui.js"></script><script src="./clinical-batch8-ui.js"></script><script src="./clinical-batch9-ui.js"></script><script src="./clinical-decorators.js"></script><script src="./editable.js"></script><script src="./generic-editable.js"></script><script src="./ward-pharmacy-bridge.js"></script>
 </body>
