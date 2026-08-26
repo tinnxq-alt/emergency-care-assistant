@@ -110,11 +110,6 @@
   }
 
   function injectUI(){
-    const banner = document.createElement('div');
-    banner.className='preview-note';
-    banner.innerHTML='🧪 <b>开发预览版 v0.3</b>：新增收藏、最近使用、离线基础与交班结构。医学高风险字段仍保持锁定，未核验内容不作为临床决策依据。';
-    document.querySelector('.safety-banner')?.insertAdjacentElement('afterend',banner);
-
     const common = $('#topicGrid')?.closest('.section');
     if(common){
       const section = document.createElement('section');

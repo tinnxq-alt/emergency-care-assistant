@@ -17,8 +17,12 @@
       const d=C.drugs[el.dataset.drug]; if(!d) return;
       const [text,kind]=label(d.status);
       const last=el.lastElementChild;
-      if(last && !last.matches('div')){ last.textContent=`${text} →`; last.dataset.verify=kind; }
-      el.dataset.clinicalStatus=kind;
+      if(last && !last.matches('div')){
+        const nextText=`${text} →`;
+        if(last.textContent!==nextText) last.textContent=nextText;
+        if(last.dataset.verify!==kind) last.dataset.verify=kind;
+      }
+      if(el.dataset.clinicalStatus!==kind) el.dataset.clinicalStatus=kind;
     });
     document.querySelectorAll('[data-topic],[data-critical]').forEach(el=>{
       const raw=el.dataset.topic||el.dataset.critical; const key=safeTopicMap[raw]; const t=key&&C.topics[key];
@@ -26,7 +30,9 @@
       const [text,kind]=label(t.status);
       let mark=el.querySelector('.clinical-card-mark');
       if(!mark){ mark=document.createElement('span'); el.appendChild(mark); }
-      mark.className=`clinical-card-mark ${kind}`; mark.textContent=text;
+      const nextClass=`clinical-card-mark ${kind}`;
+      if(mark.className!==nextClass) mark.className=nextClass;
+      if(mark.textContent!==text) mark.textContent=text;
     });
   }
   const root=document.querySelector('#modalContent');

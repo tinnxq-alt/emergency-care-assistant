@@ -31,6 +31,15 @@ for (const file of ['index.html', 'drugs.html', 'README.md', 'CLINICAL_AUDIT_V01
   if (content.includes('166')) failures.push(`${file}: 仍包含已停用的病房药库数量 166`);
 }
 
+const home = await readFile(resolve(root, 'index.html'), 'utf8');
+if (home.includes('内容安全状态')) failures.push('index.html: 主页仍显示内容安全状态');
+const enhancements = await readFile(resolve(root, 'enhancements.js'), 'utf8');
+if (enhancements.includes('开发预览版')) failures.push('enhancements.js: 仍显示开发预览版标记');
+const decorators = await readFile(resolve(root, 'clinical-decorators.js'), 'utf8');
+if (!decorators.includes('last.textContent!==nextText') || !decorators.includes('mark.textContent!==text')) {
+  failures.push('clinical-decorators.js: 缺少避免状态装饰器自触发循环的更新保护');
+}
+
 if (failures.length) {
   console.error(failures.join('\n'));
   process.exit(1);
