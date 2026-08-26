@@ -26,6 +26,11 @@ for (const asset of ['./flow-data.js', './flows.js', './flows.css']) if (!servic
 const manifest = JSON.parse(await readFile(resolve(root, 'manifest.webmanifest'), 'utf8'));
 if (!manifest.description?.includes('v0.20')) failures.push('manifest.webmanifest: 描述版本不是 v0.20');
 
+for (const file of ['index.html', 'drugs.html', 'README.md', 'CLINICAL_AUDIT_V018.md']) {
+  const content = await readFile(resolve(root, file), 'utf8');
+  if (content.includes('166')) failures.push(`${file}: 仍包含已停用的病房药库数量 166`);
+}
+
 if (failures.length) {
   console.error(failures.join('\n'));
   process.exit(1);
