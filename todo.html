@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#c9363c" />
+  <meta name="description" content="急救诊疗助手 v0.20：仅保存在当前浏览器的值班待办" />
+  <title>待办 · 急救诊疗助手 v0.20</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./navigation.css" />
+</head>
+<body data-page="todo">
+  <div class="subpage-shell">
+    <header class="topbar"><div class="brand"><div class="brand-mark">✚</div><div><h1>急救诊疗助手</h1><p>值班待办独立页面</p></div></div><span class="version">v0.20</span></header>
+    <div class="subpage-head"><div><h1>值班待办</h1><p id="standaloneTodoCount">0 项未完成</p></div></div>
+    <main>
+      <section class="page-section"><div class="todo-compose"><input id="standaloneTodoInput" placeholder="新增值班待办…" autocomplete="off" /><button id="standaloneTodoAdd">添加</button></div></section>
+      <section class="page-section"><div id="standaloneTodo" class="standalone-todo"></div></section>
+      <section class="page-section"><div class="clinical-note">待办仅保存在当前浏览器 LocalStorage，不上传患者信息。首页待办与此页共用同一份数据。</div></section>
+    </main>
+  </div>
+  <nav class="mobile-nav" aria-label="主要导航"><a href="./index.html"><b>⌂</b><span>首页</span></a><a href="./emergency.html"><b>🚑</b><span>急症</span></a><a href="./flows.html"><b>🧭</b><span>流程</span></a><a href="./drugs.html"><b>💉</b><span>用药</span></a><a class="active" href="./todo.html"><b>✓</b><span>待办</span></a></nav>
+  <div id="overlay" class="overlay" aria-hidden="true"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><h2 id="modalTitle"></h2><p id="modalSubtitle"></p></div><button id="closeModalBtn" class="icon-btn">关闭</button></div><div id="modalContent"></div></div></div>
+  <script src="./data.js"></script><script src="./pages.js"></script>
+</body>
+</html>

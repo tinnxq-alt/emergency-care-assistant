@@ -1,0 +1,8 @@
+{
+  "name": "emergency-care-assistant",
+  "version": "0.20.0",
+  "private": true,
+  "scripts": {
+    "test": "node tests/site-integrity.mjs"
+  }
+}

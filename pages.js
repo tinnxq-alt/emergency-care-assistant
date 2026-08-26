@@ -1,0 +1,92 @@
+(() => {
+  const D=window.EMERGENCY_DATA;
+  const CART=window.CRASH_CART;
+  const AUDIT=window.CRASH_CART_AUDIT;
+  if(!D) return;
+  const page=document.body.dataset.page;
+  const $=s=>document.querySelector(s);
+  const esc=(s='')=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const overlay=$('#overlay'), title=$('#modalTitle'), subtitle=$('#modalSubtitle'), content=$('#modalContent');
+  const openModal=(t,st,html)=>{if(!overlay)return;title.textContent=t;subtitle.textContent=st||'';content.innerHTML=html;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');};
+  const closeModal=()=>{overlay?.classList.remove('open');overlay?.setAttribute('aria-hidden','true');};
+  $('#closeModalBtn')?.addEventListener('click',closeModal);
+  overlay?.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+  const auditFor=item=>AUDIT?.get?.(item)||item?.audit||{};
+
+  function genericEmergency(name,critical=false){
+    const sections=['立即评估','红旗征象','首要处置','必要检查/鉴别','动态复评','转诊/留观','记录要点'];
+    openModal(name,critical?'高危入口 · 尚无专属指南卡':'主诉/急症入口 · 尚无专属指南卡',`<div class="callout">当前条目用于安全的信息结构和本机补充。未完成权威核验的药物剂量、操作参数不会自动生成。</div>${sections.map((x,i)=>`<section class="modal-card"><h3>${i+1}. ${x}</h3><p>${x==='红旗征象'?'请补充本机构需要立即抢救、升级监护或转诊的触发条件。':'可通过“编辑此项”保存你的本机内容。'}</p></section>`).join('')}`);
+  }
+  function genericDrug(name){
+    const item=(D.drugs||[]).find(x=>x.name===name);
+    const stock=(CART?.drugs||[]).find(x=>x.name===name||x.clinicalKey===name);
+    const a=stock?auditFor(stock):{};
+    const stockHtml=stock?`<section class="modal-card"><h3>本院抢救车</h3><p><strong>${esc(stock.name)}</strong> · ${esc(stock.spec)} · ${esc(stock.qty)} · ${esc(stock.layer)}</p>${a.warning?`<div class="edit-warning">⚠ ${esc(a.warning)}</div>`:''}<p>来源：${esc(CART.meta.source)}，录入日期 ${esc(CART.meta.recordedAt)}。此处仅表示本院可获得性，不代表指南推荐。</p></section>`:'';
+    openModal(name,item?.group||'抢救用药',`${stockHtml}<div class="callout">此药物尚无完整结构化临床卡。剂量、稀释、泵速等高风险字段在权威核验前保持锁定；你可以添加本机备注，但应重新临床复核。</div>${['适应证','成人剂量','给药途径','稀释/泵速','禁忌与慎用','不良反应','特殊人群','来源与更新时间'].map(x=>`<section class="modal-card"><h3>${x}</h3><p>待权威来源核验或本机补充。</p></section>`).join('')}`);
+  }
+
+  function renderEmergency(){
+    const criticalGrid=$('#criticalPageGrid'), grid=$('#emergencyPageGrid'), search=$('#emergencySearch');
+    let mode='diagnosis';
+    const renderCritical=(q='')=>{if(!criticalGrid)return;const arr=(D.critical||[]).filter(x=>!q||`${x.name} ${x.desc}`.toLowerCase().includes(q));criticalGrid.innerHTML=arr.map(x=>`<button class="page-item" data-critical="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.desc)}</small></div><span>→</span></button>`).join('')||'<div class="page-empty">没有匹配的红旗入口</div>';};
+    const renderList=(q='')=>{if(!grid)return;const arr=(D[mode]||[]).filter(x=>!q||String(x).toLowerCase().includes(q));grid.innerHTML=arr.map(x=>`<button class="page-item" data-topic="${esc(x)}"><strong>${esc(x)}</strong><span>→</span></button>`).join('')||'<div class="page-empty">没有匹配内容</div>';};
+    const refresh=()=>{const q=(search?.value||'').trim().toLowerCase();renderCritical(q);renderList(q);};
+    document.querySelectorAll('[data-emergency-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.emergencyMode;document.querySelectorAll('[data-emergency-mode]').forEach(x=>x.classList.toggle('active',x===btn));refresh();}));
+    const initialQuery=new URLSearchParams(location.search).get('q')||'';
+    if(search&&initialQuery)search.value=initialQuery;
+    search?.addEventListener('input',refresh);refresh();
+  }
+
+  function renderDrugs(){
+    const host=$('#drugPageGroups'), search=$('#drugSearch');
+    let mode='all';
+    const stockFor=name=>(CART?.drugs||[]).find(s=>s.clinicalKey===name||s.name===name);
+    const renderAll=q=>{
+      const arr=(D.drugs||[]).filter(x=>{
+        const stock=stockFor(x.name);const text=`${x.name} ${x.group} ${stock?.name||''} ${stock?.spec||''}`.toLowerCase();
+        return !q||text.includes(q);
+      });
+      const groups=new Map();arr.forEach(x=>{if(!groups.has(x.group))groups.set(x.group,[]);groups.get(x.group).push(x);});
+      return [...groups.entries()].map(([group,items])=>`<section class="drug-group"><h3>${esc(group)}</h3><div class="page-grid">${items.map(x=>{const stock=stockFor(x.name);return `<button class="page-item" data-drug="${esc(x.name)}"><div><strong>${esc(x.name)}</strong><small>${x.verified===true?'已核验':x.verified==='partial'?'部分核验':'待核验'}${stock?` · 本院有药 ${esc(stock.spec)} ${esc(stock.qty)}`:''}</small></div><span>→</span></button>`;}).join('')}</div></section>`).join('');
+    };
+    const renderCart=q=>{
+      const arr=(CART?.drugs||[]).filter(x=>!q||`${x.name} ${x.spec} ${x.qty} ${x.layer} ${x.note||''}`.toLowerCase().includes(q));
+      const groups=new Map();arr.forEach(x=>{if(!groups.has(x.layer))groups.set(x.layer,[]);groups.get(x.layer).push(x);});
+      const note=`<section class="page-section"><div class="clinical-note"><strong>${esc(CART?.meta?.name||'本院抢救车')}</strong>：仅记录药品/液体名称、规格、数量和位置；库存不设置状态标签，也不改变指南推荐优先级。</div></section>`;
+      const body=[...groups.entries()].map(([layer,items])=>`<section class="drug-group"><h3>${esc(layer)}</h3><div class="page-grid">${items.map(x=>{const a=auditFor(x);return `<button class="page-item" data-drug="${esc(x.clinicalKey||x.name)}"><div><strong>${esc(x.name)}</strong><small>${esc(x.spec)} · ${esc(x.qty)}</small>${a.warning?`<small>⚠ ${esc(a.warning)}</small>`:''}</div><span>→</span></button>`;}).join('')}</div></section>`).join('');
+      return note+body;
+    };
+    const render=()=>{const q=(search?.value||'').trim().toLowerCase();host.innerHTML=(mode==='cart'?renderCart(q):renderAll(q))||'<div class="page-empty">没有匹配药物</div>';};
+    document.querySelectorAll('[data-drug-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.drugMode;document.querySelectorAll('[data-drug-mode]').forEach(x=>x.classList.toggle('active',x===btn));render();}));
+    const initialQuery=new URLSearchParams(location.search).get('q')||'';
+    if(search&&initialQuery)search.value=initialQuery;
+    search?.addEventListener('input',render);render();
+  }
+
+  function renderTodo(){
+    const key='emergency_assistant_v02_todos';let todos=[];
+    try{todos=JSON.parse(localStorage.getItem(key)||'[]');}catch{}
+    if(!todos.length)todos=[{text:'复核抢救车药品',done:false},{text:'补充常用急症流程',done:false}];
+    const host=$('#standaloneTodo'),input=$('#standaloneTodoInput');
+    const save=()=>localStorage.setItem(key,JSON.stringify(todos));
+    const render=()=>{host.innerHTML=todos.map((t,i)=>`<div class="todo-row ${t.done?'done':''}"><input type="checkbox" data-todo-check="${i}" ${t.done?'checked':''}><span>${esc(t.text)}</span><button data-todo-del="${i}">删除</button></div>`).join('')||'<div class="page-empty">暂无待办</div>';$('#standaloneTodoCount').textContent=`${todos.filter(x=>!x.done).length} 项未完成`;save();};
+    $('#standaloneTodoAdd')?.addEventListener('click',()=>{const v=input.value.trim();if(!v)return;todos.unshift({text:v,done:false});input.value='';render();});
+    input?.addEventListener('keydown',e=>{if(e.key==='Enter')$('#standaloneTodoAdd')?.click();});
+    host?.addEventListener('change',e=>{if(e.target.matches('[data-todo-check]')){todos[+e.target.dataset.todoCheck].done=e.target.checked;render();}});
+    host?.addEventListener('click',e=>{if(e.target.matches('[data-todo-del]')){todos.splice(+e.target.dataset.todoDel,1);render();}});render();
+  }
+
+  if(page==='emergency')renderEmergency();
+  if(page==='drugs')renderDrugs();
+  if(page==='todo')renderTodo();
+
+  document.body.addEventListener('click',e=>{
+    if(page==='emergency'){
+      const c=e.target.closest('[data-critical]');if(c){genericEmergency(c.dataset.critical,true);return;}
+      const t=e.target.closest('[data-topic]');if(t){genericEmergency(t.dataset.topic,false);return;}
+    }
+    if(page==='drugs'){
+      const d=e.target.closest('[data-drug]');if(d){genericDrug(d.dataset.drug);return;}
+    }
+  });
+})();
