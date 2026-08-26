@@ -17,9 +17,12 @@ assert.equal(migration.mappings.length, names.length, '每个急救药名都必�
 assert.deepEqual(new Set(migration.mappings.map(item => item.emergencyName)), new Set(names), '迁移表必须完整覆盖流程药名');
 
 const resolved = migration.mappings.filter(item => item.status === 'resolved');
-const unresolved = migration.mappings.filter(item => item.status !== 'resolved');
-assert.equal(resolved.length, 3, '当前仅允许固化 3 个唯一匹配');
-assert.equal(unresolved.length, 9, '9 个未进入统一药库的药名必须保持阻塞');
+const ambiguous = migration.mappings.filter(item => item.status === 'ambiguous-in-unified-catalog');
+const missing = migration.mappings.filter(item => item.status === 'missing-from-unified-catalog');
+const unresolved = [...ambiguous, ...missing];
+assert.equal(resolved.length, 1, '当前仅允许固化 1 个唯一匹配');
+assert.equal(ambiguous.length, 2, '阿司匹林和葡萄糖必须保持多品规待选');
+assert.equal(missing.length, 9, '9 个未进入统一药库的药名必须保持阻塞');
 assert.ok(resolved.every(item => /^drug-[a-z0-9-]+$/i.test(item.drugId)), '已解决项必须使用稳定 drugId');
 assert.ok(unresolved.every(item => item.drugId === null), '未解决项不得分配猜测 ID');
 
@@ -29,8 +32,10 @@ for (const flow of flows) {
   assert.ok(refs.drugRefs.every(ref => !Object.hasOwn(ref, 'drugName')), `${flow.id} 的引用不得复制药名`);
 }
 
-assert.equal(migration.refsForFlow(flows.find(flow => flow.id === 'chest-pain')).drugRefs[0].drugId, 'drug-025');
-assert.equal(migration.refsForFlow(flows.find(flow => flow.id === 'hypoglycemia')).drugRefs[0].drugId, 'drug-096');
+assert.equal(migration.refsForFlow(flows.find(flow => flow.id === 'chest-pain')).drugRefs.length, 0);
+assert.deepEqual([...migration.refsForFlow(flows.find(flow => flow.id === 'chest-pain')).unresolvedDrugNames], ['阿司匹林']);
+assert.equal(migration.refsForFlow(flows.find(flow => flow.id === 'hypoglycemia')).drugRefs.length, 0);
+assert.deepEqual([...migration.refsForFlow(flows.find(flow => flow.id === 'hypoglycemia')).unresolvedDrugNames], ['葡萄糖']);
 assert.equal(migration.refsForFlow(flows.find(flow => flow.id === 'infection')).drugRefs[0].drugId, 'drug-164');
 
-console.log('急救 drug_id 迁移审计通过：3 个唯一匹配，9 个明确阻塞，0 个猜测 ID');
+console.log('急救 drug_id 迁移审计通过：1 个唯一匹配，2 个多候选，9 个缺失，0 个猜测 ID');
