@@ -3,6 +3,6 @@
   "version": "0.20.0",
   "private": true,
   "scripts": {
-    "test": "node tests/site-integrity.mjs"
+    "test": "node tests/site-integrity.mjs && node tests/drug-id-migration.mjs"
   }
 }
