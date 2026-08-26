@@ -2,9 +2,9 @@
   'use strict';
 
   const mappings = [
-    { emergencyName: '阿司匹林', status: 'ambiguous-in-unified-catalog', drugId: null, candidateDrugIds: ['drug-025', 'outpatient-dl0783', 'outpatient-gx0780'] },
-    { emergencyName: '葡萄糖', status: 'ambiguous-in-unified-catalog', drugId: null, candidateDrugIds: ['drug-096', 'outpatient-gx3674'] },
-    { emergencyName: '头孢曲松（脑膜炎）', status: 'resolved', drugId: 'drug-164', matchedBy: 'alias-to-genericName', canonicalName: '注射用头孢曲松钠' },
+    { emergencyName: '阿司匹林', status: 'multiple-product-candidates', drugId: null, candidateProductIds: ['drug-025', 'outpatient-dl0783', 'outpatient-gx0780'] },
+    { emergencyName: '葡萄糖', status: 'multiple-product-candidates', drugId: null, candidateProductIds: ['drug-096', 'outpatient-gx3674'] },
+    { emergencyName: '头孢曲松（脑膜炎）', status: 'single-product-candidate', drugId: null, candidateProductIds: ['drug-164'] },
     { emergencyName: '肾上腺素', status: 'missing-from-unified-catalog', drugId: null, inventoryEvidence: '本院抢救车：盐酸肾上腺素 1 mg' },
     { emergencyName: '胺碘酮', status: 'missing-from-unified-catalog', drugId: null, inventoryEvidence: '本院抢救车：盐酸胺碘酮 0.15 g' },
     { emergencyName: '去甲肾上腺素', status: 'missing-from-unified-catalog', drugId: null },
@@ -37,7 +37,7 @@
     generatedAt: '2026-08-26',
     emergencyBaseline: '856805613e1967ae56493a77e7b3d5fd309f6dc2',
     medicationBaseline: '523cc38e42760d229c95537dfb74b1570a8738e8',
-    policy: 'All 556 ward and outpatient items are audited. Only unique matches receive drugId; missing or ambiguous names remain unresolved for clinical and inventory review.',
+    policy: 'Existing catalog IDs are product IDs, not generic drug IDs. All flows remain unresolved until drug_concepts are created and products are linked to them.',
     mappings: Object.freeze(mappings.map(item => Object.freeze({ ...item }))),
     refsForFlow
   });
