@@ -32,7 +32,9 @@
     const renderList=(q='')=>{if(!grid)return;const arr=(D[mode]||[]).filter(x=>!q||String(x).toLowerCase().includes(q));grid.innerHTML=arr.map(x=>`<button class="page-item" data-topic="${esc(x)}"><strong>${esc(x)}</strong><span>→</span></button>`).join('')||'<div class="page-empty">没有匹配内容</div>';};
     const refresh=()=>{const q=(search?.value||'').trim().toLowerCase();renderCritical(q);renderList(q);};
     document.querySelectorAll('[data-emergency-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.emergencyMode;document.querySelectorAll('[data-emergency-mode]').forEach(x=>x.classList.toggle('active',x===btn));refresh();}));
-    search?.addEventListener('input',refresh);renderCritical();renderList();
+    const initialQuery=new URLSearchParams(location.search).get('q')||'';
+    if(search&&initialQuery)search.value=initialQuery;
+    search?.addEventListener('input',refresh);refresh();
   }
 
   function renderDrugs(){
@@ -56,6 +58,8 @@
     };
     const render=()=>{const q=(search?.value||'').trim().toLowerCase();host.innerHTML=(mode==='cart'?renderCart(q):renderAll(q))||'<div class="page-empty">没有匹配药物</div>';};
     document.querySelectorAll('[data-drug-mode]').forEach(btn=>btn.addEventListener('click',()=>{mode=btn.dataset.drugMode;document.querySelectorAll('[data-drug-mode]').forEach(x=>x.classList.toggle('active',x===btn));render();}));
+    const initialQuery=new URLSearchParams(location.search).get('q')||'';
+    if(search&&initialQuery)search.value=initialQuery;
     search?.addEventListener('input',render);render();
   }
 

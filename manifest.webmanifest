@@ -1,7 +1,7 @@
 {
   "name": "急救诊疗助手",
   "short_name": "急救助手",
-  "description": "基层急诊、抢救与值班工作台 v0.19；临床指南核验与本院可获得性分层，抢救车不设置库存状态，并保留病房166种药品与抢救车18项资料",
+  "description": "基层急诊、抢救与值班工作台 v0.20；整合10个急救流程入口，临床指南核验与本院可获得性分层",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f4f6fa",
